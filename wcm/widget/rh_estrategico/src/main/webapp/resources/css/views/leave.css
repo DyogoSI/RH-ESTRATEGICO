@@ -1,0 +1,11 @@
+.rh-estrategico-widget .rh-leave {
+    margin-top: 32px;
+}
+
+.rh-estrategico-widget .rh-leave-kpis {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.rh-estrategico-widget .rh-leave-ranking {
+    margin-top: 16px;
+}

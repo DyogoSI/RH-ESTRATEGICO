@@ -1,0 +1,7 @@
+.rh-estrategico-widget .rh-vacation {
+    margin-top: 32px;
+}
+
+.rh-estrategico-widget .rh-vacation-kpis {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}

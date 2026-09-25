@@ -1,0 +1,117 @@
+.rh-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.rh-kpi-card {
+    position: relative;
+    overflow: hidden;
+
+    padding: 20px 20px 22px;
+
+    background: var(--rh-card);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid var(--rh-glass-border);
+    border-radius: var(--rh-radius-lg);
+    box-shadow: var(--rh-glass-shadow);
+
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.rh-kpi-card::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.rh-kpi-card::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 0;
+    height: 4px;
+    border-radius: 999px 999px 0 0;
+    opacity: 0.9;
+}
+
+.rh-kpi-label {
+    display: block;
+    margin-bottom: 12px;
+    padding-right: 18px;
+
+    color: var(--rh-text-muted) !important;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.rh-kpi-value {
+    display: block;
+
+    color: var(--rh-text) !important;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1;
+}
+
+.rh-kpi-description {
+    display: block;
+    margin-top: 10px;
+
+    color: var(--rh-text-muted) !important;
+    font-size: 12px;
+}
+
+.rh-kpi-card--blue::before {
+    background: var(--rh-blue);
+    box-shadow: 0 0 0 4px var(--rh-blue-soft);
+}
+
+.rh-kpi-card--blue::after {
+    background: linear-gradient(90deg, var(--rh-blue), var(--rh-cyan));
+}
+
+.rh-kpi-card--green::before {
+    background: var(--rh-green);
+    box-shadow: 0 0 0 4px var(--rh-green-soft);
+}
+
+.rh-kpi-card--green::after {
+    background: linear-gradient(90deg, #16a34a, #4ade80);
+}
+
+.rh-kpi-card--red::before {
+    background: var(--rh-red);
+    box-shadow: 0 0 0 4px var(--rh-red-soft);
+}
+
+.rh-kpi-card--red::after {
+    background: linear-gradient(90deg, #dc2626, #f87171);
+}
+
+.rh-kpi-card--orange::before {
+    background: var(--rh-orange);
+    box-shadow: 0 0 0 4px var(--rh-orange-soft);
+}
+
+.rh-kpi-card--orange::after {
+    background: linear-gradient(90deg, #ea580c, #fbbf24);
+}
+
+.rh-kpi-card--purple::before {
+    background: var(--rh-purple);
+    box-shadow: 0 0 0 4px var(--rh-purple-soft);
+}
+
+.rh-kpi-card--purple::after {
+    background: var(--rh-gradient);
+}

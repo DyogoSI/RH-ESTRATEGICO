@@ -1,0 +1,80 @@
+.rh-estrategico-widget {
+    --rh-bg: #f5f6fb;
+    --rh-card: rgba(255, 255, 255, 0.6);
+    --rh-border: #e9e9f5;
+
+    --rh-text: #1e1b4b;
+    --rh-text-muted: #6b7280;
+
+    --rh-blue: #4f46e5;
+    --rh-green: #16a34a;
+    --rh-red: #dc2626;
+    --rh-orange: #ea580c;
+    --rh-purple: #8b5cf6;
+    --rh-cyan: #06b6d4;
+
+    --rh-blue-soft: #eef2ff;
+    --rh-green-soft: #f0fdf4;
+    --rh-red-soft: #fef2f2;
+    --rh-orange-soft: #fff7ed;
+    --rh-purple-soft: #f5f3ff;
+    --rh-cyan-soft: #ecfeff;
+
+    --rh-gradient: linear-gradient(90deg, #8b5cf6 0%, #06b6d4 100%);
+    --rh-gradient-soft: linear-gradient(135deg, rgba(139, 92, 246, 0.10), rgba(6, 182, 212, 0.10));
+
+    --rh-table-head: rgba(238, 240, 253, 0.75);
+    --rh-table-zebra: rgba(139, 92, 246, 0.05);
+    --rh-overlay: rgba(255, 255, 255, 0.78);
+
+    --rh-radius-sm: 10px;
+    --rh-radius-md: 16px;
+    --rh-radius-lg: 20px;
+
+    --rh-shadow: 0 4px 20px rgba(99, 102, 241, 0.08);
+    --rh-shadow-md: 0 8px 28px rgba(99, 102, 241, 0.12);
+
+    --rh-glass-bg: rgba(255, 255, 255, 0.55);
+    --rh-glass-bg-strong: rgba(255, 255, 255, 0.72);
+    --rh-glass-border: rgba(255, 255, 255, 0.6);
+    --rh-glass-highlight: rgba(255, 255, 255, 0.85);
+    --rh-glass-shadow: 0 8px 32px rgba(99, 102, 241, 0.18);
+}
+
+.rh-estrategico-widget[data-rh-theme="dark"] {
+    --rh-bg: #0f1222;
+    --rh-card: rgba(26, 29, 53, 0.55);
+    --rh-border: #2c2f4a;
+
+    --rh-text: #e7e8f5;
+    --rh-text-muted: #9497b8;
+
+    --rh-blue: #818cf8;
+    --rh-green: #4ade80;
+    --rh-red: #f87171;
+    --rh-orange: #fb923c;
+    --rh-purple: #a78bfa;
+    --rh-cyan: #22d3ee;
+
+    --rh-blue-soft: rgba(129, 140, 248, 0.16);
+    --rh-green-soft: rgba(74, 222, 128, 0.16);
+    --rh-red-soft: rgba(248, 113, 113, 0.16);
+    --rh-orange-soft: rgba(251, 146, 60, 0.16);
+    --rh-purple-soft: rgba(167, 139, 250, 0.16);
+    --rh-cyan-soft: rgba(34, 211, 238, 0.16);
+
+    --rh-gradient-soft: linear-gradient(135deg, rgba(139, 92, 246, 0.24), rgba(6, 182, 212, 0.24));
+
+    --rh-table-head: rgba(35, 38, 73, 0.7);
+    --rh-table-zebra: rgba(167, 139, 250, 0.06);
+    --rh-overlay: rgba(12, 15, 31, 0.82);
+
+    --rh-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    --rh-shadow-md: 0 8px 28px rgba(0, 0, 0, 0.45);
+
+    --rh-glass-bg: rgba(26, 29, 53, 0.45);
+    --rh-glass-bg-strong: rgba(26, 29, 53, 0.65);
+    --rh-glass-border: rgba(255, 255, 255, 0.14);
+    --rh-glass-highlight: rgba(255, 255, 255, 0.08);
+    --rh-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}

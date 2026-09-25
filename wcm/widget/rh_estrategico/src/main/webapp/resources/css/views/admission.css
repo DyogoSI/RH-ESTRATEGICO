@@ -1,0 +1,7 @@
+.rh-estrategico-widget .rh-admission {
+    margin-top: 32px;
+}
+
+.rh-estrategico-widget .rh-admission-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}

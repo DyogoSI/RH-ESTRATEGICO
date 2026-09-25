@@ -1,0 +1,130 @@
+.rh-table-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.rh-table-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.rh-table-grid--single {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.rh-table-card {
+    min-width: 0;
+    padding: 20px;
+
+    background: var(--rh-card);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid var(--rh-glass-border);
+    border-radius: var(--rh-radius-lg);
+    box-shadow: var(--rh-glass-shadow);
+}
+
+.rh-table-scroll {
+    margin-top: 4px;
+    overflow-x: auto;
+}
+
+.rh-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.rh-table-scroll .rh-table {
+    width: auto;
+    min-width: 100%;
+}
+
+.rh-table-scroll .rh-table th,
+.rh-table-scroll .rh-table td {
+    white-space: nowrap;
+}
+
+/* Coluna congelada: na horizontal, a 1ª coluna (Coligada/Filial) continua
+   visível mesmo rolando pra ver as colunas mais à direita */
+.rh-table-scroll .rh-table th:first-child,
+.rh-table-scroll .rh-table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+
+    background: inherit;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.04);
+}
+
+.rh-table-scroll .rh-table thead th:first-child {
+    z-index: 3;
+    background: var(--rh-table-head);
+}
+
+.rh-table th,
+.rh-table td {
+    padding: 12px 14px;
+
+    font-size: 13px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.rh-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    background: var(--rh-table-head);
+    color: var(--rh-text-muted) !important;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    border-bottom: 2px solid var(--rh-border);
+}
+
+.rh-table thead th:first-child {
+    border-top-left-radius: var(--rh-radius-sm);
+}
+
+.rh-table thead th:last-child {
+    border-top-right-radius: var(--rh-radius-sm);
+}
+
+.rh-table tbody td {
+    color: var(--rh-text) !important;
+    border-bottom: 1px solid var(--rh-border);
+}
+
+.rh-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.rh-table tbody tr {
+    background: var(--rh-card);
+    transition: background-color 0.12s ease;
+}
+
+.rh-table tbody tr:nth-child(even) {
+    background: var(--rh-table-zebra);
+}
+
+.rh-table tbody tr:hover {
+    background: var(--rh-blue-soft);
+}
+
+.rh-table-empty {
+    padding: 20px 0;
+
+    color: var(--rh-text-muted) !important;
+    font-size: 13px;
+    text-align: center;
+}

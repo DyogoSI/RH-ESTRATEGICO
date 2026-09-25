@@ -1,0 +1,21 @@
+.rh-estrategico-widget .rh-quota {
+    margin-top: 32px;
+}
+
+.rh-estrategico-widget .rh-quota-subtitle {
+    margin: 24px 0 12px;
+
+    color: var(--rh-text-muted) !important;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.rh-estrategico-widget .rh-quota-kpis {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.rh-estrategico-widget .rh-quota-ranking {
+    margin-top: 16px;
+}

@@ -1,0 +1,7 @@
+.rh-estrategico-widget .rh-contract {
+    margin-top: 32px;
+}
+
+.rh-estrategico-widget .rh-contract-kpis {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}

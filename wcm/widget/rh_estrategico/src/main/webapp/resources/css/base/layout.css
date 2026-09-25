@@ -1,0 +1,71 @@
+.fluig-style-guide.rh-estrategico-widget {
+    background:
+        radial-gradient(circle at 8% 12%, rgba(139, 92, 246, 0.22), transparent 42%),
+        radial-gradient(circle at 92% 8%, rgba(6, 182, 212, 0.22), transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.18), transparent 48%),
+        radial-gradient(circle at 10% 90%, rgba(59, 130, 246, 0.16), transparent 45%),
+        linear-gradient(160deg, #f3f0ff 0%, #eef2ff 35%, #e6f7fb 100%)
+        !important;
+    color: var(--rh-text) !important;
+    padding: 20px;
+    border-radius: var(--rh-radius-lg);
+}
+
+.fluig-style-guide.rh-estrategico-widget[data-rh-theme="dark"] {
+    background:
+        radial-gradient(circle at 8% 12%, rgba(139, 92, 246, 0.35), transparent 42%),
+        radial-gradient(circle at 92% 8%, rgba(6, 182, 212, 0.3), transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.25), transparent 48%),
+        radial-gradient(circle at 10% 90%, rgba(59, 130, 246, 0.22), transparent 45%),
+        linear-gradient(160deg, #12142a 0%, #0f1222 50%, #0c0f1f 100%)
+        !important;
+}
+
+.rh-estrategico-widget .rh-main-content,
+.rh-estrategico-widget .rh-overview {
+    background: transparent;
+}
+
+.rh-main-content {
+    margin-top: 24px;
+}
+
+.rh-estrategico-widget .rh-shell {
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+}
+
+.rh-estrategico-widget .rh-sidebar {
+    flex: none;
+    width: 268px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    padding: 24px 18px;
+
+    background: var(--rh-card);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid var(--rh-glass-border);
+    border-radius: var(--rh-radius-lg);
+    box-shadow: var(--rh-glass-shadow);
+}
+
+.rh-estrategico-widget .rh-content {
+    flex: 1 1 0%;
+    min-width: 0;
+}
+
+@media (max-width: 720px) {
+    .rh-estrategico-widget .rh-shell {
+        flex-direction: column;
+    }
+
+    .rh-estrategico-widget .rh-sidebar {
+        width: 100%;
+    }
+}
+

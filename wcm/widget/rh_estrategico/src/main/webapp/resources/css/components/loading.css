@@ -1,0 +1,50 @@
+.rh-estrategico-widget {
+    position: relative;
+}
+
+.rh-estrategico-widget .rh-loading {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    background: var(--rh-overlay);
+    backdrop-filter: blur(2px);
+}
+
+.rh-estrategico-widget .rh-loading.active {
+    display: flex;
+}
+
+.rh-estrategico-widget .rh-loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 24px;
+    background: var(--rh-card);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid var(--rh-glass-border);
+    border-radius: var(--rh-radius-md);
+    box-shadow: var(--rh-glass-shadow);
+    color: var(--rh-text-muted) !important;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.rh-estrategico-widget .rh-loading-spinner {
+    width: 34px;
+    height: 34px;
+    border: 3px solid var(--rh-border);
+    border-top-color: var(--rh-blue);
+    border-radius: 50%;
+    animation: rhLoadingSpin 0.7s linear infinite;
+}
+
+@keyframes rhLoadingSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}

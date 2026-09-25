@@ -1,0 +1,57 @@
+.rh-estrategico-widget .rh-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rh-estrategico-widget .rh-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    background: transparent;
+    border: 0;
+    border-radius: var(--rh-radius-sm);
+
+    color: var(--rh-text-muted) !important;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.rh-estrategico-widget .rh-nav-item svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+}
+
+.rh-estrategico-widget .rh-nav-item:hover {
+    color: var(--rh-text) !important;
+    background: var(--rh-gradient-soft);
+}
+
+.rh-estrategico-widget .rh-nav-item.active {
+    background: var(--rh-gradient);
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+}
+
+.rh-estrategico-widget .rh-view-container {
+    display: none;
+}
+
+.rh-estrategico-widget .rh-view-container.active {
+    display: block;
+}
+
+@media (max-width: 720px) {
+    .rh-estrategico-widget .rh-navigation {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
