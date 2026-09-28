@@ -22,6 +22,11 @@ var RHNavigation = {
     ativar: function (view) {
         var root = $("#RHEstrategico_" + this.instanceId);
 
+        // Alguns campos do filtro global só fazem sentido numa aba
+        // específica (ex.: "Seção" só existe na aba Férias) — esse atributo
+        // deixa o CSS mostrar/esconder esses campos conforme a aba ativa
+        root.attr("data-rh-view-atual", view);
+
         root.find(".rh-nav-item")
             .removeClass("active");
 

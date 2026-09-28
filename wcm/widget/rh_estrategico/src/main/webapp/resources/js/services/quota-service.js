@@ -27,6 +27,12 @@ var RHQuotaService = {
             );
         }
 
+        if (filtros.filial) {
+            constraints.push(
+                RHDatasetService.criarConstraint("CODFILIAL", filtros.filial)
+            );
+        }
+
         return constraints;
     },
 

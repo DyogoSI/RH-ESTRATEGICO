@@ -36,17 +36,7 @@ var RHCharts = {
 
                 ativos.forEach(function (ativo) {
                     var el = ativo.element;
-
-                    if (typeof el.startAngle !== "number") {
-                        return;
-                    }
-
                     var dataset = chart.data.datasets[ativo.datasetIndex];
-                    var cores = dataset && dataset.rhCoresBase;
-                    var cor = (cores && cores[ativo.index]) || "#8b5cf6";
-
-                    var raioMeio = (el.innerRadius + el.outerRadius) / 2;
-                    var espessura = el.outerRadius - el.innerRadius;
 
                     ctx.save();
 
@@ -62,26 +52,84 @@ var RHCharts = {
                     );
                     ctx.clip();
 
-                    // Brilho simples: um único traço com sombra suave por
-                    // cima da própria fatia (mesma largura do anel), sem
-                    // invadir o resto do card. Sem blend aditivo ("lighter")
-                    // e sem repintar em cima com cor sólida — isso é o que
-                    // criava aquela "borda" branca ao redor do anel inteiro
-                    var corSombra = that.temaEscuro ? cor : that.escurecerCor(cor, 0.35);
-
-                    ctx.beginPath();
-                    ctx.arc(el.x, el.y, raioMeio, el.startAngle, el.endAngle);
-                    ctx.lineWidth = espessura;
-                    ctx.strokeStyle = cor;
-                    ctx.shadowColor = corSombra;
-                    ctx.shadowBlur = that.temaEscuro ? 10 : 6;
-                    ctx.globalAlpha = that.temaEscuro ? 0.6 : 0.45;
-                    ctx.stroke();
+                    if (typeof el.startAngle === "number") {
+                        that.brilharFatia(ctx, el, dataset, ativo.index);
+                    } else if (typeof el.width === "number" && typeof el.base === "number") {
+                        that.brilharBarra(ctx, el, dataset);
+                    }
 
                     ctx.restore();
                 });
             }
         });
+    },
+
+    // Brilho da fatia de rosca/pizza: um único traço com sombra suave por
+    // cima da própria fatia (mesma largura do anel), sem invadir o resto do
+    // card. Sem blend aditivo ("lighter") e sem repintar em cima com cor
+    // sólida — isso é o que criava aquela "borda" branca ao redor do anel
+    // inteiro
+    brilharFatia: function (ctx, el, dataset, index) {
+        var cores = dataset && dataset.rhCoresBase;
+        var cor = (cores && cores[index]) || "#8b5cf6";
+
+        var raioMeio = (el.innerRadius + el.outerRadius) / 2;
+        var espessura = el.outerRadius - el.innerRadius;
+        var corSombra = this.temaEscuro ? cor : this.escurecerCor(cor, 0.35);
+
+        ctx.beginPath();
+        ctx.arc(el.x, el.y, raioMeio, el.startAngle, el.endAngle);
+        ctx.lineWidth = espessura;
+        ctx.strokeStyle = cor;
+        ctx.shadowColor = corSombra;
+        ctx.shadowBlur = this.temaEscuro ? 10 : 6;
+        ctx.globalAlpha = this.temaEscuro ? 0.6 : 0.45;
+        ctx.stroke();
+    },
+
+    // Brilho da barra: mesmo tratamento da fatia (traço com sombra por cima
+    // da própria forma), mas contornando o retângulo (arredondado, seguindo
+    // o "borderRadius" configurado no dataset) da barra ativa em vez do
+    // anel. "getProps(..., true)" pega a geometria final (não a do quadro
+    // de animação atual) — o hover não reanima a barra, mas isso evita
+    // qualquer chance de pegar um frame intermediário
+    brilharBarra: function (ctx, el, dataset) {
+        var cor = (dataset && dataset.rhCorBase) || "#8b5cf6";
+        var props = el.getProps(["x", "y", "width", "height", "base", "horizontal"], true);
+
+        var retangulo = props.horizontal
+            ? {
+                left: Math.min(props.base, props.x),
+                right: Math.max(props.base, props.x),
+                top: props.y - props.height / 2,
+                bottom: props.y + props.height / 2
+            }
+            : {
+                left: props.x - props.width / 2,
+                right: props.x + props.width / 2,
+                top: Math.min(props.y, props.base),
+                bottom: Math.max(props.y, props.base)
+            };
+
+        var largura = retangulo.right - retangulo.left;
+        var altura = retangulo.bottom - retangulo.top;
+        var raio = Math.min(dataset.borderRadius || 0, largura / 2, altura / 2);
+        var corSombra = this.temaEscuro ? cor : this.escurecerCor(cor, 0.35);
+
+        ctx.beginPath();
+
+        if (ctx.roundRect) {
+            ctx.roundRect(retangulo.left, retangulo.top, largura, altura, raio);
+        } else {
+            ctx.rect(retangulo.left, retangulo.top, largura, altura);
+        }
+
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = cor;
+        ctx.shadowColor = corSombra;
+        ctx.shadowBlur = this.temaEscuro ? 14 : 8;
+        ctx.globalAlpha = this.temaEscuro ? 0.7 : 0.5;
+        ctx.stroke();
     },
 
     destroy: function (key) {
@@ -173,8 +221,14 @@ var RHCharts = {
     },
 
     // Paleta padrão pra gráficos de distribuição/categoria (sem significado
-    // de status), roxo -> ciano, alinhada com a identidade visual do painel
-    PALETA_CATEGORICA: ["#a855f7", "#8b5cf6", "#6366f1", "#3b82f6", "#0ea5e9", "#06b6d4", "#22d3ee"],
+    // de status). Antes era um gradiente contínuo roxo -> ciano — com
+    // poucas fatias dava pra espalhar bem, mas com 5+ fatias (todo o
+    // gráfico usa os 7 tons) fatias vizinhas ficavam quase idênticas, dando
+    // a impressão de que as cores estavam "misturadas". Essas cores agora
+    // alternam entre tons quentes e frios (mantendo o roxo/ciano da marca
+    // nas duas primeiras posições), então mesmo entradas vizinhas do array
+    // ficam bem distintas entre si — não é mais um espectro contínuo
+    PALETA_CATEGORICA: ["#a855f7", "#f97316", "#06b6d4", "#ec4899", "#22c55e", "#6366f1", "#eab308", "#ef4444"],
 
     // Espalha as cores por todo o espectro da paleta conforme a quantidade
     // de fatias, em vez de sempre pegar as primeiras (que ficam parecidas
@@ -200,6 +254,8 @@ var RHCharts = {
     // Chart.js). Enquanto o gráfico ainda não tem área calculada, devolve
     // uma cor sólida de fallback pra não quebrar a primeira renderização
     gradienteBarra: function (corInicio, corFim, horizontal) {
+        this.registrarPluginBrilho();
+
         return function (context) {
             var chart = context.chart;
             var chartArea = chart.chartArea;
@@ -342,12 +398,14 @@ var RHCharts = {
                     {
                         label: "Admissões",
                         data: dados.admissoes,
+                        rhCorBase: "#16a34a",
                         backgroundColor: this.gradienteBarra("#16a34a", "#4ade80", false),
                         borderRadius: 6
                     },
                     {
                         label: "Rescisões",
                         data: dados.rescisoes,
+                        rhCorBase: "#dc2626",
                         backgroundColor: this.gradienteBarra("#dc2626", "#fb923c", false),
                         borderRadius: 6
                     }
@@ -466,6 +524,7 @@ var RHCharts = {
                 datasets: [{
                     label: "Admissões",
                     data: dados.valores,
+                    rhCorBase: "#8b5cf6",
                     backgroundColor: this.gradienteBarra("#8b5cf6", "#06b6d4", false),
                     borderRadius: 5
                 }]
@@ -576,6 +635,7 @@ var RHCharts = {
                 datasets: [{
                     label: "Saldo (dias)",
                     data: dados.valores,
+                    rhCorBase: "#8b5cf6",
                     backgroundColor: this.gradienteBarra("#8b5cf6", "#06b6d4", true),
                     borderRadius: 5
                 }]
@@ -745,6 +805,7 @@ var RHCharts = {
                 datasets: [{
                     label: "Contratos",
                     data: dados.valores,
+                    rhCorBase: "#8b5cf6",
                     backgroundColor: this.gradienteBarra("#8b5cf6", "#06b6d4", false),
                     borderRadius: 5
                 }]
@@ -856,6 +917,7 @@ var RHCharts = {
         if (!canvas) return;
 
         this.destroy(key);
+        this.registrarPluginBrilho();
 
         this.instances[key] = new Chart(canvas, {
             type: "bar",
@@ -866,6 +928,7 @@ var RHCharts = {
                 datasets: [{
                     label: "Déficit",
                     data: dados.valores,
+                    rhCorBase: "#dc2626",
                     backgroundColor: "#dc2626",
                     borderRadius: 5
                 }]
@@ -978,6 +1041,7 @@ var RHCharts = {
                 datasets: [{
                     label: "Afastamentos",
                     data: dados.valores,
+                    rhCorBase: "#8b5cf6",
                     backgroundColor: this.gradienteBarra("#8b5cf6", "#06b6d4", false),
                     borderRadius: 5
                 }]
@@ -1035,6 +1099,7 @@ var RHCharts = {
                 datasets: [{
                     label: "Dias perdidos",
                     data: dados.valores,
+                    rhCorBase: "#8b5cf6",
                     backgroundColor: this.gradienteBarra("#8b5cf6", "#06b6d4", true),
                     borderRadius: 5
                 }]

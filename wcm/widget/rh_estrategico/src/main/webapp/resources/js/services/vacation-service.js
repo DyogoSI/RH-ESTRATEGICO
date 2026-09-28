@@ -21,7 +21,40 @@ var RHVacationService = {
             );
         }
 
-        return RHDatasetService.buscar("ds_rh_ferias_marcadas", constraints);
+        var registros = RHDatasetService.buscar("ds_rh_ferias_marcadas", constraints);
+
+        return this.filtrarPeriodo(registros, filtros);
+    },
+
+    // Nem "ds_rh_ferias_saldo" nem "ds_rh_ferias_marcadas" têm coluna de
+    // filial, então esses dois só filtram por empresa no server. "Marcadas"
+    // tem DATAINICIO/DATAFIM, então dá pra aplicar o filtro de período aqui
+    filtrarPeriodo: function (registros, filtros) {
+        if (!filtros.dataInicio && !filtros.dataFim) {
+            return registros;
+        }
+
+        var that = this;
+        var inicio = filtros.dataInicio ? new Date(filtros.dataInicio) : null;
+        var fim = filtros.dataFim ? new Date(filtros.dataFim) : null;
+
+        return registros.filter(function (item) {
+            var dataInicioFerias = that.parseData(item.DATAINICIO);
+
+            if (!dataInicioFerias) {
+                return false;
+            }
+
+            if (inicio && dataInicioFerias < inicio) {
+                return false;
+            }
+
+            if (fim && dataInicioFerias > fim) {
+                return false;
+            }
+
+            return true;
+        });
     },
 
     parseNumero: function (valor) {
@@ -43,7 +76,9 @@ var RHVacationService = {
             return null;
         }
 
-        return new Date(Number(partes[2]), Number(partes[1]) - 1, Number(partes[0]));
+        var data = new Date(Number(partes[2]), Number(partes[1]) - 1, Number(partes[0]));
+
+        return isNaN(data.getTime()) ? null : data;
     },
 
     calcularResumo: function (registrosSaldo, registrosMarcadas) {

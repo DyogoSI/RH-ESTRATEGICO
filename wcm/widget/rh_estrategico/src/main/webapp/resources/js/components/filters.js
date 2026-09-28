@@ -46,17 +46,20 @@ var RHFilters = {
         });
     },
 
+    // Ajustar um filtro só guarda o valor (e, no caso da empresa, atualiza
+    // a lista de filiais) — nada é recarregado até a pessoa clicar em
+    // "Filtrar". Isso evita toda a categoria de bug de recarregar cedo
+    // demais (no meio da digitação da data, ou logo após só um dos dois
+    // campos de período), e deixa explícito quando a busca realmente roda
     bindEvents: function () {
         var that = this;
 
         $("#rhDataInicio_" + that.instanceId).on("change", function () {
             RHState.setFiltro("dataInicio", $(this).val());
-            that.aplicar();
         });
 
         $("#rhDataFim_" + that.instanceId).on("change", function () {
             RHState.setFiltro("dataFim", $(this).val());
-            that.aplicar();
         });
 
         $("#rhEmpresa_" + that.instanceId).on("change", function () {
@@ -66,11 +69,13 @@ var RHFilters = {
             RHState.setFiltro("filial", "");
 
             that.carregarFiliais(empresa);
-            that.aplicar();
         });
 
         $("#rhFilial_" + that.instanceId).on("change", function () {
             RHState.setFiltro("filial", $(this).val());
+        });
+
+        $("#rhBtnFiltrar_" + that.instanceId).on("click", function () {
             that.aplicar();
         });
 
@@ -93,6 +98,38 @@ var RHFilters = {
         $("#rhEmpresa_" + this.instanceId).val("");
         $("#rhFilial_" + this.instanceId).val("");
 
+        // "Seção" mora no mesmo painel mas é controlado pelo RHVacationView
+        // (só existe/faz efeito na aba Férias). Disparar "change" nele
+        // (em vez de só zerar o valor) avisa o RHVacationView pra também
+        // esquecer a seção escolhida, senão ela continuaria filtrando por
+        // baixo mesmo depois de "Limpar filtros"
+        $("#rhVacationSecao_" + this.instanceId).val("").trigger("change");
+
+        // "Status" e "Tipo de Contrato" são lidos direto do DOM pelo
+        // RHContractView a cada renderização (sem estado em cache), então
+        // só zerar o valor aqui já é suficiente — não precisa de "change"
+        $("#rhContractStatus_" + this.instanceId).val("");
+        $("#rhContractTipo_" + this.instanceId).val("");
+
+        // Os 11 campos avançados de Admissões também são lidos direto do
+        // DOM pelo RHAdmissionView, mesma lógica acima
+        [
+            "rhAdmissionSecao_", "rhAdmissionFuncao_", "rhAdmissionSituacao_",
+            "rhAdmissionTipoAdmissao_", "rhAdmissionMotivo_", "rhAdmissionCategoriaEsocial_",
+            "rhAdmissionSexo_", "rhAdmissionNacionalidade_", "rhAdmissionRaca_",
+            "rhAdmissionGrauInstrucao_", "rhAdmissionDeficiencia_"
+        ].forEach(function (prefixo) {
+            $("#" + prefixo + this.instanceId).val("");
+        }, this);
+
+        // "Área", "Tipo" e "Motivo" de Afastamentos, mesma lógica acima
+        [
+            "rhLeaveSecao_", "rhLeaveTipoAfastamento_", "rhLeaveMotivo_"
+        ].forEach(function (prefixo) {
+            $("#" + prefixo + this.instanceId).val("");
+        }, this);
+
+        this.carregarFiliais("");
         this.aplicar();
     }
 

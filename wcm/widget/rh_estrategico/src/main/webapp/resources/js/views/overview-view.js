@@ -11,6 +11,8 @@ var RHOverviewView = {
         this.bindKpiClicks();
         this.atualizar();
 
+        RHCarousel.init("#rhOverviewCarrossel_" + instanceId);
+
         RHExport.bind(
             "#rhOverviewExportar_" + instanceId,
             "#rhOverviewCaptura_" + instanceId,

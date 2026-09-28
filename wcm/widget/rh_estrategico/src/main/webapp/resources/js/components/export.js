@@ -34,6 +34,46 @@ var RHExport = {
             elemento.setAttribute("data-rh-theme", "dark");
         }
 
+        // A imagem exportada saía sem nenhuma identidade visual da empresa
+        // (o cabeçalho com a logo é um elemento separado, fora da área
+        // capturada). O PDF já resolve isso desenhando a logo direto no
+        // jsPDF (ver pdf-export.js/RH_LOGO_BASE64) — aqui, como é uma
+        // captura de tela, insere um cabeçalho de verdade no topo do
+        // elemento antes de capturar, e remove depois.
+        //
+        // A logo "branca" (RH_LOGO_BRANCA_BASE64) tem o texto "INTERHATIVA"
+        // bem clarinho — só aparece de verdade em cima de fundo escuro, por
+        // isso só usa ela quando o tema escuro está ativo; no claro
+        // continua com a logo original (colorida)
+        var cabecalho = null;
+        var logoParaExportar = temaEscuro && typeof RH_LOGO_BRANCA_BASE64 !== "undefined"
+            ? RH_LOGO_BRANCA_BASE64
+            : (typeof RH_LOGO_BASE64 !== "undefined" ? RH_LOGO_BASE64 : null);
+
+        if (logoParaExportar) {
+            cabecalho = document.createElement("div");
+
+            // Estilo direto no elemento (não só a classe "rh-export-cabecalho"
+            // do rh_estrategico.css) — esse cabeçalho só existe durante a
+            // captura, então não dá pra confiar que o CSS externo já vai
+            // estar carregado/aplicado a tempo do html2canvas capturar
+            cabecalho.setAttribute(
+                "style",
+                "display: flex; align-items: center; gap: 14px; " +
+                "margin-bottom: 20px; padding-bottom: 16px; " +
+                "border-bottom: 1px solid " + (temaEscuro ? "rgba(255,255,255,0.14)" : "#e9e9f5") + ";"
+            );
+
+            cabecalho.innerHTML =
+                '<img src="' + logoParaExportar + '" alt="" style="display: block; height: 34px; width: auto; flex: none;">' +
+                '<div style="display: flex; flex-direction: column;">' +
+                    '<strong style="font-size: 15px; font-weight: 800; color: ' + (temaEscuro ? "#e7e8f5" : "#1e1b4b") + ';">RH Estratégico</strong>' +
+                    '<span style="font-size: 11px; color: ' + (temaEscuro ? "#9497b8" : "#6b7280") + ';">Gerado em ' + new Date().toLocaleString("pt-BR") + '</span>' +
+                "</div>";
+
+            elemento.insertBefore(cabecalho, elemento.firstChild);
+        }
+
         var restaurarElemento = function () {
             elemento.className = classesOriginais;
             elemento.style.padding = paddingOriginal;
@@ -42,6 +82,10 @@ var RHExport = {
                 elemento.removeAttribute("data-rh-theme");
             } else {
                 elemento.setAttribute("data-rh-theme", temaOriginal);
+            }
+
+            if (cabecalho && cabecalho.parentNode) {
+                cabecalho.parentNode.removeChild(cabecalho);
             }
         };
 

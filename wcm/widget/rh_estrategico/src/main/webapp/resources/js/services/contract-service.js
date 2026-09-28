@@ -11,7 +11,44 @@ var RHContractService = {
             );
         }
 
-        return RHDatasetService.buscar("ds_rh_contratos", constraints);
+        // Nesse dataset a coluna é "FILIAL" (não "CODFILIAL" como em cotas)
+        if (filtros.filial) {
+            constraints.push(
+                RHDatasetService.criarConstraint("FILIAL", filtros.filial)
+            );
+        }
+
+        var registros = RHDatasetService.buscar("ds_rh_contratos", constraints);
+
+        return this.filtrarPeriodo(registros, filtros);
+    },
+
+    filtrarPeriodo: function (registros, filtros) {
+        if (!filtros.dataInicio && !filtros.dataFim) {
+            return registros;
+        }
+
+        var that = this;
+        var inicio = filtros.dataInicio ? new Date(filtros.dataInicio) : null;
+        var fim = filtros.dataFim ? new Date(filtros.dataFim) : null;
+
+        return registros.filter(function (item) {
+            var admissao = that.parseData(item.ADMISSAO);
+
+            if (!admissao) {
+                return false;
+            }
+
+            if (inicio && admissao < inicio) {
+                return false;
+            }
+
+            if (fim && admissao > fim) {
+                return false;
+            }
+
+            return true;
+        });
     },
 
     parseData: function (valor) {
@@ -25,7 +62,9 @@ var RHContractService = {
             return null;
         }
 
-        return new Date(Number(partes[2]), Number(partes[1]) - 1, Number(partes[0]));
+        var data = new Date(Number(partes[2]), Number(partes[1]) - 1, Number(partes[0]));
+
+        return isNaN(data.getTime()) ? null : data;
     },
 
     classificarTipo: function (item) {

@@ -42,28 +42,38 @@
 
     <div id="rhOverviewDrilldown_${instanceId}" class="rh-drilldown"></div>
 
-    <div class="rh-chart-grid">
-        <div class="rh-chart-card">
-            <div class="rh-chart-header">
-                <div>
-                    <h3>Movimentação de Colaboradores</h3>
-                    <span>Admissões x Rescisões</span>
+    <div class="rh-carousel" id="rhOverviewCarrossel_${instanceId}">
+        <div class="rh-carousel-track">
+            <div class="rh-carousel-slide active">
+                <div class="rh-chart-card">
+                    <div class="rh-chart-header">
+                        <div>
+                            <h3>Movimentação de Colaboradores</h3>
+                            <span>Admissões x Rescisões</span>
+                        </div>
+                    </div>
+                    <div class="rh-chart-body">
+                        <canvas id="rhChartMovimentacao_${instanceId}"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="rh-chart-body">
-                <canvas id="rhChartMovimentacao_${instanceId}"></canvas>
+            <div class="rh-carousel-slide">
+                <div class="rh-chart-card">
+                    <div class="rh-chart-header">
+                        <div>
+                            <h3>Distribuição do Quadro</h3>
+                            <span>Por situação atual</span>
+                        </div>
+                    </div>
+                    <div class="rh-chart-body rh-chart-body--donut">
+                        <canvas id="rhChartDistribuicao_${instanceId}"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="rh-chart-card">
-            <div class="rh-chart-header">
-                <div>
-                    <h3>Distribuição do Quadro</h3>
-                    <span>Por situação atual</span>
-                </div>
-            </div>
-            <div class="rh-chart-body rh-chart-body--donut">
-                <canvas id="rhChartDistribuicao_${instanceId}"></canvas>
-            </div>
+        <div class="rh-carousel-dots rh-no-print">
+            <button type="button" class="rh-carousel-dot active" aria-label="Ver Movimentação de Colaboradores"></button>
+            <button type="button" class="rh-carousel-dot" aria-label="Ver Distribuição do Quadro"></button>
         </div>
     </div>
   </div>

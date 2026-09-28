@@ -80,8 +80,47 @@
     filter: invert(1);
 }
 
+/* "Seção" só faz sentido na aba Férias — RHNavigation.ativar() marca a aba
+   ativa em data-rh-view-atual na raiz do widget, e só aí esse campo aparece */
+.rh-estrategico-widget .rh-filter-group--secao {
+    display: none;
+}
+
+.rh-estrategico-widget[data-rh-view-atual="vacation"] .rh-filter-group--secao {
+    display: block;
+}
+
+/* "Status" e "Tipo de Contrato" só fazem sentido na aba Contratos */
+.rh-estrategico-widget .rh-filter-group--contrato {
+    display: none;
+}
+
+.rh-estrategico-widget[data-rh-view-atual="contract"] .rh-filter-group--contrato {
+    display: block;
+}
+
+/* Os 11 campos avançados só fazem sentido na aba Admissões. São muitos, e
+   a pessoa confirmou que pode quebrar linha (a barra já tem flex-wrap) */
+.rh-estrategico-widget .rh-filter-group--admission {
+    display: none;
+}
+
+.rh-estrategico-widget[data-rh-view-atual="admission"] .rh-filter-group--admission {
+    display: block;
+}
+
+/* "Área", "Tipo" e "Motivo" só fazem sentido na aba Afastamentos */
+.rh-estrategico-widget .rh-filter-group--leave {
+    display: none;
+}
+
+.rh-estrategico-widget[data-rh-view-atual="leave"] .rh-filter-group--leave {
+    display: block;
+}
+
 .rh-estrategico-widget .rh-filter-actions {
     display: flex;
     align-items: flex-end;
+    gap: 10px;
     margin-left: auto;
 }

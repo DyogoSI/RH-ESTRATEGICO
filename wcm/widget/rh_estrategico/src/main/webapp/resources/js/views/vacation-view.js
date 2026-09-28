@@ -1,8 +1,11 @@
 var RHVacationView = {
 
     instanceId: null,
+    registrosSaldoTodos: null,
+    registrosMarcadasTodos: null,
     registrosSaldo: null,
     registrosMarcadas: null,
+    secaoAtual: "",
 
     init: function (instanceId) {
         this.instanceId = instanceId;
@@ -10,6 +13,7 @@ var RHVacationView = {
         console.log("[RH Estratégico] Visão de Férias inicializada:", instanceId);
 
         this.bindKpiClicks();
+        this.bindFiltroSecao();
         this.atualizar();
 
         RHExport.bind(
@@ -43,17 +47,103 @@ var RHVacationView = {
         );
     },
 
+    bindFiltroSecao: function () {
+        var that = this;
+
+        $("#rhVacationSecao_" + this.instanceId).on("change", function () {
+            that.secaoAtual = $(this).val();
+            that.aplicarFiltroSecao();
+        });
+    },
+
+    // Busca os dados (respeitando os filtros globais de período/empresa/
+    // filial) e monta a lista de seções a partir do que voltou — não existe
+    // dataset separado de "seções", então a lista é derivada dos próprios
+    // registros de férias
     atualizar: function () {
         var filtros = RHState.getFiltros();
 
-        var registrosSaldo = RHVacationService.buscarSaldo(filtros);
-        var registrosMarcadas = RHVacationService.buscarMarcadas(filtros);
+        this.registrosSaldoTodos = RHVacationService.buscarSaldo(filtros);
+        this.registrosMarcadasTodos = RHVacationService.buscarMarcadas(filtros);
 
-        this.registrosSaldo = registrosSaldo;
-        this.registrosMarcadas = registrosMarcadas;
+        console.log("[RH Estratégico] Dados de Férias (saldo):", this.registrosSaldoTodos);
+        console.log("[RH Estratégico] Dados de Férias (marcadas):", this.registrosMarcadasTodos);
 
-        console.log("[RH Estratégico] Dados de Férias (saldo):", registrosSaldo);
-        console.log("[RH Estratégico] Dados de Férias (marcadas):", registrosMarcadas);
+        this.carregarOpcoesSecao();
+        this.aplicarFiltroSecao();
+    },
+
+    carregarOpcoesSecao: function () {
+        var secoes = {};
+
+        (this.registrosSaldoTodos || []).forEach(function (item) {
+            var codigo = item.CODSECAO;
+
+            if (codigo && !secoes[codigo]) {
+                secoes[codigo] = item["SEÇÃO"] || codigo;
+            }
+        });
+
+        (this.registrosMarcadasTodos || []).forEach(function (item) {
+            var codigo = item.CODSECAO;
+
+            if (codigo && !secoes[codigo]) {
+                secoes[codigo] = item.DESCRICAO || codigo;
+            }
+        });
+
+        var select = $("#rhVacationSecao_" + this.instanceId);
+        var valorAtual = this.secaoAtual;
+
+        select.empty();
+        select.append('<option value="">Todas as seções</option>');
+
+        Object.keys(secoes)
+            .sort(function (a, b) {
+                return String(secoes[a]).localeCompare(String(secoes[b]));
+            })
+            .forEach(function (codigo) {
+                select.append(
+                    $("<option>", {
+                        value: codigo,
+                        text: secoes[codigo]
+                    })
+                );
+            });
+
+        // Mantém a seção escolhida se ela continuar existindo na lista nova
+        // (ex.: depois de trocar o filtro de empresa); senão volta pra "Todas"
+        if (valorAtual && secoes[valorAtual]) {
+            select.val(valorAtual);
+        } else {
+            this.secaoAtual = "";
+            select.val("");
+        }
+    },
+
+    // Filtra os registros já carregados pela seção escolhida — não busca de
+    // novo no servidor, já que a seção é só um recorte do que já veio
+    aplicarFiltroSecao: function () {
+        var secao = this.secaoAtual;
+
+        var filtrarPorSecao = function (item) {
+            return String(item.CODSECAO) === String(secao);
+        };
+
+        this.registrosSaldo = secao
+            ? (this.registrosSaldoTodos || []).filter(filtrarPorSecao)
+            : (this.registrosSaldoTodos || []);
+
+        this.registrosMarcadas = secao
+            ? (this.registrosMarcadasTodos || []).filter(filtrarPorSecao)
+            : (this.registrosMarcadasTodos || []);
+
+        this.renderizar();
+    },
+
+    renderizar: function () {
+        var registrosSaldo = this.registrosSaldo;
+        var registrosMarcadas = this.registrosMarcadas;
 
         var resumo = RHVacationService.calcularResumo(registrosSaldo, registrosMarcadas);
 

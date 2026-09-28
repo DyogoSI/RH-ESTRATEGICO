@@ -53,22 +53,17 @@
     gap: 16px;
 }
 
+/* Logo branca, lê direto em cima do gradiente do topbar — não precisa de
+   fundo próprio */
 .rh-estrategico-widget .rh-topbar-selo {
     display: flex;
     flex: none;
     align-items: center;
-    justify-content: center;
-
-    padding: 8px 16px;
-
-    background: rgba(255, 255, 255, 0.96);
-    border-radius: 14px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
 }
 
 .rh-estrategico-widget .rh-topbar-selo img {
     display: block;
-    height: 34px;
+    height: 48px;
     width: auto;
 }
 

@@ -45,34 +45,37 @@ application.resource.js.13=/resources/js/vendor/html2canvas.min.js
 application.resource.js.14=/resources/js/vendor/jspdf.umd.min.js
 application.resource.js.15=/resources/js/vendor/jspdf.plugin.autotable.min.js
 application.resource.js.16=/resources/js/vendor/interhativa-logo.js
-application.resource.js.17=/resources/js/vendor/xlsx-js-style.js
-application.resource.js.18=/resources/js/components/loading.js
-application.resource.js.19=/resources/js/components/navigation.js
-application.resource.js.20=/resources/js/components/filters.js
-application.resource.js.21=/resources/js/components/kpi-cards.js
-application.resource.js.22=/resources/js/components/charts.js
-application.resource.js.23=/resources/js/components/drilldown.js
-application.resource.js.24=/resources/js/components/export.js
-application.resource.js.25=/resources/js/components/pdf-export.js
-application.resource.js.26=/resources/js/components/xlsx-export.js
-application.resource.js.27=/resources/js/components/theme.js
+application.resource.js.17=/resources/js/vendor/interhativa-logo-branca.js
+application.resource.js.18=/resources/js/vendor/irho-logo.js
+application.resource.js.19=/resources/js/vendor/xlsx-js-style.js
+application.resource.js.20=/resources/js/components/loading.js
+application.resource.js.21=/resources/js/components/navigation.js
+application.resource.js.22=/resources/js/components/filters.js
+application.resource.js.23=/resources/js/components/kpi-cards.js
+application.resource.js.24=/resources/js/components/charts.js
+application.resource.js.25=/resources/js/components/drilldown.js
+application.resource.js.26=/resources/js/components/export.js
+application.resource.js.27=/resources/js/components/pdf-export.js
+application.resource.js.28=/resources/js/components/xlsx-export.js
+application.resource.js.29=/resources/js/components/theme.js
+application.resource.js.30=/resources/js/components/carousel.js
 
 # =========================
 # JavaScript - Views
 # =========================
-application.resource.js.28=/resources/js/views/overview-view.js
-application.resource.js.29=/resources/js/views/admission-view.js
-application.resource.js.30=/resources/js/views/termination-view.js
-application.resource.js.31=/resources/js/views/vacation-view.js
-application.resource.js.32=/resources/js/views/leave-view.js
-application.resource.js.33=/resources/js/views/contract-view.js
-application.resource.js.34=/resources/js/views/quota-view.js
+application.resource.js.31=/resources/js/views/overview-view.js
+application.resource.js.32=/resources/js/views/admission-view.js
+application.resource.js.33=/resources/js/views/termination-view.js
+application.resource.js.34=/resources/js/views/vacation-view.js
+application.resource.js.35=/resources/js/views/leave-view.js
+application.resource.js.36=/resources/js/views/contract-view.js
+application.resource.js.37=/resources/js/views/quota-view.js
 
 # =========================
 # JavaScript - Inicialização
 # =========================
-application.resource.js.35=/resources/js/core/rh-app.js
-application.resource.js.36=/resources/js/rh_estrategico.js
+application.resource.js.38=/resources/js/core/rh-app.js
+application.resource.js.39=/resources/js/rh_estrategico.js
 
 # =========================
 # CSS - Base

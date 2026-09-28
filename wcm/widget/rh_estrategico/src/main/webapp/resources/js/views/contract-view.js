@@ -1,6 +1,7 @@
 var RHContractView = {
 
     instanceId: null,
+    registrosTodos: null,
     registros: null,
 
     init: function (instanceId) {
@@ -9,6 +10,7 @@ var RHContractView = {
         console.log("[RH Estratégico] Visão de Contratos inicializada:", instanceId);
 
         this.bindKpiClicks();
+        this.bindFiltrosLocais();
         this.atualizar();
 
         RHExport.bind(
@@ -38,13 +40,58 @@ var RHContractView = {
         );
     },
 
+    // Busca respeitando os filtros globais (período/empresa/filial) e
+    // aplica por cima o filtro local de Status/Tipo de Contrato — esse
+    // segundo filtro é sobre campos calculados (não existem como coluna no
+    // dataset), então é sempre feito no cliente, sem nova busca
     atualizar: function () {
         var filtros = RHState.getFiltros();
-        var registros = RHContractService.buscar(filtros);
 
-        console.log("[RH Estratégico] Dados de Contratos:", registros);
+        this.registrosTodos = RHContractService.buscar(filtros);
 
-        this.registros = registros;
+        console.log("[RH Estratégico] Dados de Contratos:", this.registrosTodos);
+
+        this.aplicarFiltrosLocais();
+    },
+
+    bindFiltrosLocais: function () {
+        var that = this;
+
+        $("#rhContractStatus_" + this.instanceId).on("change", function () {
+            that.aplicarFiltrosLocais();
+        });
+
+        $("#rhContractTipo_" + this.instanceId).on("change", function () {
+            that.aplicarFiltrosLocais();
+        });
+    },
+
+    aplicarFiltrosLocais: function () {
+        var servico = RHContractService;
+        var hoje = new Date();
+        var limite = new Date(hoje);
+        limite.setDate(hoje.getDate() + servico.LIMITE_DIAS_EXPIRACAO);
+
+        var statusEscolhido = $("#rhContractStatus_" + this.instanceId).val();
+        var tipoEscolhido = $("#rhContractTipo_" + this.instanceId).val();
+
+        this.registros = (this.registrosTodos || []).filter(function (item) {
+            if (statusEscolhido && servico.calcularStatus(item, hoje, limite) !== statusEscolhido) {
+                return false;
+            }
+
+            if (tipoEscolhido && servico.classificarTipo(item) !== tipoEscolhido) {
+                return false;
+            }
+
+            return true;
+        });
+
+        this.renderizar();
+    },
+
+    renderizar: function () {
+        var registros = this.registros;
 
         var resumo = RHContractService.calcularResumo(registros);
 
