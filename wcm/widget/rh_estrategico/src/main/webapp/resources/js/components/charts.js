@@ -707,6 +707,17 @@ var RHCharts = {
                 cutout: "68%",
                 radius: "82%",
 
+                onHover: function (evento, ativos) {
+                    evento.native.target.style.cursor =
+                        ativos.length && dados.onClick ? "pointer" : "default";
+                },
+
+                onClick: function (evento, ativos) {
+                    if (!ativos.length || !dados.onClick) return;
+
+                    dados.onClick(dados.labels[ativos[0].index]);
+                },
+
                 plugins: {
                     legend: {
                         position: "bottom",
@@ -716,13 +727,88 @@ var RHCharts = {
                         }
                     },
                     tooltip: {
-                        callbacks: {
-                            labelColor: this.tooltipCorPlana
-                        }
+                        enabled: false,
+                        external: this.tooltipCardFerias(instanceId)
                     }
                 }
             }
         });
+    },
+
+    // Tooltip HTML em card branco (mesmo visual do gráfico Saldo x Dias Gozados)
+    tooltipCardFerias: function (instanceId) {
+        var escapar = function (txt) {
+            return $("<div>").text(txt).html();
+        };
+
+        return function (context) {
+            var chart = context.chart;
+            var tooltip = context.tooltip;
+            var el = chart.canvas.parentNode.querySelector(".rh-card-tooltip");
+
+            if (!el) {
+                el = document.createElement("div");
+                el.className = "rh-card-tooltip";
+                el.style.cssText =
+                    "position:absolute;pointer-events:none;z-index:50;" +
+                    "background:#fff;border:1px solid #e2e8f0;" +
+                    "border-radius:14px;padding:14px;font-size:12px;" +
+                    "color:#334155;box-shadow:0 12px 36px rgba(15,23,42,.12);" +
+                    "transition:opacity .12s ease;white-space:nowrap;";
+                chart.canvas.parentNode.style.position = "relative";
+                chart.canvas.parentNode.appendChild(el);
+            }
+
+            if (tooltip.opacity === 0 || !tooltip.dataPoints || !tooltip.dataPoints.length) {
+                el.style.opacity = 0;
+                return;
+            }
+
+            var ponto = tooltip.dataPoints[0];
+            var dataset = ponto.dataset;
+            var total = dataset.data.reduce(function (a, b) {
+                return a + (Number(b) || 0);
+            }, 0);
+            var valor = Number(ponto.raw) || 0;
+            var pct = total ? (valor / total * 100).toFixed(1) : "0.0";
+            var cor = (dataset.rhCoresBase && dataset.rhCoresBase[ponto.dataIndex]) || "#6366f1";
+
+            var linha = function (rotulo, val, dot, ultima) {
+                return '<div style="display:flex;justify-content:space-between;gap:24px;' +
+                    (ultima ? '' : 'margin-bottom:7px;') + '">' +
+                    '<span style="color:#64748b;">' +
+                    (dot ? '<span style="display:inline-block;width:7px;height:7px;' +
+                        'margin-right:7px;border-radius:50%;background:' + dot + ';"></span>' : '') +
+                    rotulo + '</span>' +
+                    '<strong style="color:#0f172a;">' + val + '</strong></div>';
+            };
+
+            el.innerHTML =
+                '<div style="min-width:190px">' +
+                '<div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:10px;">' +
+                escapar(ponto.label) + '</div>' +
+                linha("Férias", valor, cor) +
+                linha("Participação", pct.replace(".", ",") + "%") +
+                linha("Total geral", total, null, true) +
+                '<div style="margin-top:10px;padding-top:9px;border-top:1px solid #f1f5f9;' +
+                'color:#6366f1;font-size:10px;font-weight:700;">' +
+                'Clique para ver os colaboradores</div>' +
+                '</div>';
+
+            var pai = chart.canvas.parentNode;
+            var x = tooltip.caretX + 14;
+            var y = tooltip.caretY - el.offsetHeight / 2;
+
+            if (x + el.offsetWidth > pai.clientWidth) {
+                x = tooltip.caretX - el.offsetWidth - 14;
+            }
+            x = Math.max(0, x);
+            y = Math.max(0, Math.min(y, pai.clientHeight - el.offsetHeight));
+
+            el.style.left = x + "px";
+            el.style.top = y + "px";
+            el.style.opacity = 1;
+        };
     },
 
     renderContract: function (instanceId, dados) {

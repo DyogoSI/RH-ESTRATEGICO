@@ -28,6 +28,29 @@
     box-shadow: var(--rh-glass-shadow);
 }
 
+.rh-table-card[data-rh-kpi] {
+    cursor: pointer;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.rh-table-card[data-rh-kpi]:hover {
+    border-color: rgba(139, 92, 246, .55);
+}
+
+.rh-table-card[data-rh-kpi] .rh-table-hint {
+    display: block;
+    margin-top: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #8b5cf6;
+    opacity: 0;
+    transition: opacity .15s ease;
+}
+
+.rh-table-card[data-rh-kpi]:hover .rh-table-hint {
+    opacity: 1;
+}
+
 .rh-table-scroll {
     margin-top: 4px;
     overflow-x: auto;
