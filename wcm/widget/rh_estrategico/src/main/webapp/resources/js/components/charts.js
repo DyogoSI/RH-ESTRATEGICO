@@ -185,7 +185,12 @@ var RHCharts = {
         // RHCharts direto (não "this"): o Chart.js chama generateLabels
         // como função solta (sem o "this" de RHCharts), então "this" aqui
         // dentro não seria o objeto certo
-        var corTexto = RHCharts.corTexto();
+        // Cards claros (ex.: Férias) forçam a cor da legenda via options
+        var corForcada = chart.options.plugins
+            && chart.options.plugins.legend
+            && chart.options.plugins.legend.labels
+            && chart.options.plugins.legend.labels.rhCorFixa;
+        var corTexto = corForcada || RHCharts.corTexto();
 
         return data.labels.map(function (label, i) {
             var cor = cores[i] || "#8b5cf6";
@@ -722,7 +727,8 @@ var RHCharts = {
                     legend: {
                         position: "bottom",
                         labels: {
-                            color: this.corTexto(),
+                            color: "#475569",
+                            rhCorFixa: "#475569",
                             generateLabels: this.legendaCoresPlanas
                         }
                     },

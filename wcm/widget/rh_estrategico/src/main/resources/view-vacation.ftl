@@ -200,7 +200,7 @@
                     </div>
                 </div>
             </div>
-            <div class="rh-chart-card">
+            <div class="rh-chart-card rh-vacation-chart-card">
                 <div class="rh-chart-header">
                     <div>
                         <h3>Situação das Férias Marcadas</h3>
@@ -228,7 +228,7 @@
         </button>
     </div>
     <div class="rh-table-grid">
-        <div class="rh-table-card" data-rh-kpi="vencendo">
+        <div class="rh-table-card rh-vacation-light" data-rh-kpi="vencendo">
             <div class="rh-chart-header">
                 <div>
                     <h3>Próximos Vencimentos</h3>
@@ -248,7 +248,7 @@
             </table>
             <span class="rh-table-hint">Clique para ver todos os vencimentos</span>
         </div>
-        <div class="rh-table-card" data-rh-kpi="agora">
+        <div class="rh-table-card rh-vacation-light" data-rh-kpi="agora">
             <div class="rh-chart-header">
                 <div>
                     <h3>De Férias Agora</h3>
