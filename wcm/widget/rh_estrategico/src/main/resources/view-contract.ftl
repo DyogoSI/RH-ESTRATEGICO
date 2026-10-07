@@ -44,7 +44,7 @@
     <div id="rhContractDrilldown_${instanceId}" class="rh-drilldown"></div>
 
     <div class="rh-chart-grid">
-        <div class="rh-chart-card">
+        <div class="rh-chart-card rh-light">
             <div class="rh-chart-header">
                 <div>
                     <h3>Status dos Contratos</h3>
@@ -55,7 +55,7 @@
                 <canvas id="rhContractChartStatus_${instanceId}"></canvas>
             </div>
         </div>
-        <div class="rh-chart-card">
+        <div class="rh-chart-card rh-light">
             <div class="rh-chart-header">
                 <div>
                     <h3>Contratos por Tipo</h3>
@@ -85,7 +85,7 @@
     </div>
 
     <div class="rh-table-grid rh-table-grid--single">
-        <div class="rh-table-card">
+        <div class="rh-table-card rh-light" data-rh-kpi="expirando">
             <div class="rh-chart-header">
                 <div>
                     <h3>Próximos Vencimentos</h3>
@@ -104,6 +104,7 @@
                 </thead>
                 <tbody id="rhContractTabelaVencimentos_${instanceId}"></tbody>
             </table>
+            <span class="rh-table-hint">Clique para ver os contratos</span>
         </div>
     </div>
 </section>

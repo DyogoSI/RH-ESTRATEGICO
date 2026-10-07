@@ -45,7 +45,7 @@
     <div class="rh-carousel" id="rhOverviewCarrossel_${instanceId}">
         <div class="rh-carousel-track">
             <div class="rh-carousel-slide active">
-                <div class="rh-chart-card">
+                <div class="rh-chart-card rh-light">
                     <div class="rh-chart-header">
                         <div>
                             <h3>Movimentação de Colaboradores</h3>
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="rh-carousel-slide">
-                <div class="rh-chart-card">
+                <div class="rh-chart-card rh-light">
                     <div class="rh-chart-header">
                         <div>
                             <h3>Distribuição do Quadro</h3>

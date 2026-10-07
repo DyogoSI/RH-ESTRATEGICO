@@ -137,6 +137,7 @@ var RHAdmissionView = {
     },
 
     renderizar: function () {
+        var that = this;
         var registros = this.registros;
         var resumo = RHAdmissionService.calcularResumo(registros);
 
@@ -181,6 +182,19 @@ var RHAdmissionView = {
 
         RHCharts.renderAdmission(this.instanceId, {
             porMes: {
+                onClick: function (mes) {
+                    RHDrilldown.abrirFiltrado(
+                        that.instanceId, that.configDrilldown("total"),
+                        function (linha) {
+                            var data = RHAdmissionService.parseData(linha.dataAdmissao);
+
+                            return !!data && (
+                                String(data.getMonth() + 1).padStart(2, "0") + "/" + data.getFullYear()
+                            ) === mes;
+                        },
+                        mes, "Admissão · Mês"
+                    );
+                },
                 labels: chavesMes.map(function (chave) {
                     return meses[chave].label;
                 }),
@@ -191,6 +205,12 @@ var RHAdmissionView = {
             },
 
             porTipo: {
+                onClick: function (tipo) {
+                    RHDrilldown.abrirPorCampo(
+                        that.instanceId, that.configDrilldown("total"),
+                        "tipo", tipo, "Admissão · Tipo"
+                    );
+                },
                 labels: chavesTipo,
                 valores: chavesTipo.map(function (tipo) {
                     return tipos[tipo];

@@ -1,4 +1,8 @@
-<section class="rh-filters">
+<aside class="rh-filters">
+
+    <h3 class="rh-filters-titulo">Filtros</h3>
+
+    <div class="rh-filters-corpo">
 
     <div class="rh-filter-group">
         <label for="rhDataInicio_${instanceId}">De</label>
@@ -167,19 +171,111 @@
         </select>
     </div>
 
+    <#-- Só aparecem na aba Rescisões (ver "rh-filter-group--termination" em
+         filters.css). As opções são preenchidas pelo termination-view.js a
+         partir dos próprios dados carregados -->
+    <div class="rh-filter-group rh-filter-group--termination">
+        <label for="rhTerminationSecao_${instanceId}">Seção</label>
+        <select id="rhTerminationSecao_${instanceId}" class="rh-filter-control">
+            <option value="">Todas as seções</option>
+        </select>
+    </div>
+
+    <div class="rh-filter-group rh-filter-group--termination">
+        <label for="rhTerminationFuncao_${instanceId}">Função</label>
+        <select id="rhTerminationFuncao_${instanceId}" class="rh-filter-control">
+            <option value="">Todas as funções</option>
+        </select>
+    </div>
+
+    <div class="rh-filter-group rh-filter-group--termination">
+        <label for="rhTerminationCentroCusto_${instanceId}">Centro de Custo</label>
+        <select id="rhTerminationCentroCusto_${instanceId}" class="rh-filter-control">
+            <option value="">Todos os centros de custo</option>
+        </select>
+    </div>
+
+    <div class="rh-filter-group rh-filter-group--termination">
+        <label for="rhTerminationMotivo_${instanceId}">Motivo</label>
+        <select id="rhTerminationMotivo_${instanceId}" class="rh-filter-control">
+            <option value="">Todos os motivos</option>
+        </select>
+    </div>
+
+    <div class="rh-filter-group rh-filter-group--termination">
+        <label for="rhTerminationTipo_${instanceId}">Tipo de Demissão</label>
+        <select id="rhTerminationTipo_${instanceId}" class="rh-filter-control">
+            <option value="">Todos os tipos</option>
+        </select>
+    </div>
+
+    <div class="rh-filter-group rh-filter-group--termination">
+        <label for="rhTerminationAvisoPrevio_${instanceId}">Aviso Prévio</label>
+        <select id="rhTerminationAvisoPrevio_${instanceId}" class="rh-filter-control">
+            <option value="">Todos</option>
+        </select>
+    </div>
+
+    <div class="rh-filter-group rh-filter-group--termination">
+        <label for="rhTerminationFaixaTempo_${instanceId}">Tempo de Empresa</label>
+        <select id="rhTerminationFaixaTempo_${instanceId}" class="rh-filter-control">
+            <option value="">Todas as faixas</option>
+        </select>
+    </div>
+
+    <div class="rh-filter-group rh-filter-group--termination">
+        <label for="rhTerminationFaixaEtaria_${instanceId}">Faixa Etária</label>
+        <select id="rhTerminationFaixaEtaria_${instanceId}" class="rh-filter-control">
+            <option value="">Todas as faixas</option>
+        </select>
+    </div>
+
+    <#-- Só aparecem na aba Benefícios (ver "rh-filter-group--benefit" em
+         filters.css). As opções são preenchidas pelo benefit-view.js: seção,
+         função e período da folha a partir dos dados carregados; "Possui o
+         benefício" a partir do catálogo de eventos do benefit-service.js -->
+    <div class="rh-filter-group rh-filter-group--benefit">
+        <label for="rhBenefitSecao_${instanceId}">Seção</label>
+        <select id="rhBenefitSecao_${instanceId}" class="rh-filter-control">
+            <option value="">Todas as seções</option>
+        </select>
+    </div>
+
+    <div class="rh-filter-group rh-filter-group--benefit">
+        <label for="rhBenefitFuncao_${instanceId}">Função</label>
+        <select id="rhBenefitFuncao_${instanceId}" class="rh-filter-control">
+            <option value="">Todas as funções</option>
+        </select>
+    </div>
+
+    <div class="rh-filter-group rh-filter-group--benefit">
+        <label for="rhBenefitPeriodoFolha_${instanceId}">Período da Folha</label>
+        <select id="rhBenefitPeriodoFolha_${instanceId}" class="rh-filter-control">
+            <option value="">Todos os períodos</option>
+        </select>
+    </div>
+
+    <div class="rh-filter-group rh-filter-group--benefit">
+        <label for="rhBenefitBeneficio_${instanceId}">Possui o Benefício</label>
+        <select id="rhBenefitBeneficio_${instanceId}" class="rh-filter-control">
+            <option value="">Todos os benefícios</option>
+        </select>
+    </div>
+    </div>
+
     <div class="rh-filter-actions">
-        <button
-            type="button"
-            id="rhBtnLimparFiltros_${instanceId}"
-            class="rh-btn rh-btn-secondary">
-            Limpar filtros
-        </button>
         <button
             type="button"
             id="rhBtnFiltrar_${instanceId}"
             class="rh-btn rh-btn-primary">
             Filtrar
         </button>
+        <button
+            type="button"
+            id="rhBtnLimparFiltros_${instanceId}"
+            class="rh-btn rh-btn-secondary">
+            Limpar filtros
+        </button>
     </div>
 
-</section>
+</aside>

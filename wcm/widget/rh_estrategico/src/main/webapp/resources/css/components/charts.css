@@ -1,11 +1,12 @@
 .rh-chart-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     gap: 16px;
     margin-top: 24px;
 }
 
 .rh-chart-card {
+    min-width: 0;
     padding: 22px;
 
     background: var(--rh-card);
@@ -45,4 +46,64 @@
 
 .rh-chart-body--donut {
     height: 280px;
+}
+
+/* =========================
+   Cards claros genéricos (rosca + tabelas das demais abas)
+   ========================= */
+
+.rh-estrategico-widget .rh-light {
+    background: #ffffff;
+    border: 1px solid #e8edf3;
+    border-radius: 20px;
+
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+
+    box-shadow:
+        0 1px 2px rgba(15, 23, 42, 0.02),
+        0 8px 26px rgba(15, 23, 42, 0.035);
+}
+
+.rh-estrategico-widget .rh-light .rh-chart-header h3 {
+    color: #0f172a !important;
+}
+
+.rh-estrategico-widget .rh-light .rh-chart-header span {
+    color: #64748b !important;
+}
+
+.rh-estrategico-widget .rh-light .rh-table thead th {
+    background: #f8fafc;
+    color: #64748b !important;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.rh-estrategico-widget .rh-light .rh-table tbody td {
+    color: #1e293b !important;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.rh-estrategico-widget .rh-light .rh-table tbody tr {
+    background: #ffffff;
+}
+
+.rh-estrategico-widget .rh-light .rh-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.rh-estrategico-widget .rh-light .rh-table tbody tr:hover {
+    background: #eef2ff;
+}
+
+.rh-estrategico-widget .rh-light.rh-table-card[data-rh-kpi]:hover {
+    border-color: rgba(99, 102, 241, 0.35);
+}
+
+.rh-estrategico-widget .rh-light .rh-table-empty {
+    color: #64748b !important;
+}
+
+.rh-estrategico-widget .rh-light .rh-table-hint {
+    color: #6366f1;
 }

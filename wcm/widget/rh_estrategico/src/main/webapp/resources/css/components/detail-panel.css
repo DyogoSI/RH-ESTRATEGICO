@@ -9,6 +9,9 @@
 
     padding: 32px;
 
+    /* Perspectiva para o giro 3D de abertura do painel */
+    perspective: 1800px;
+
     background: rgba(15, 23, 42, 0);
     -webkit-backdrop-filter: blur(0);
     backdrop-filter: blur(0);
@@ -54,6 +57,7 @@
 
     opacity: 0;
 
+    transform-origin: center center;
     transform:
         translateY(18px)
         scale(0.975);
@@ -392,4 +396,9 @@
         grid-template-columns: 1fr 1fr;
     }
 
+}
+/* Usado só no instante em que o card original reaparece depois do fechamento */
+.rh-estrategico-widget .rh-sem-transicao,
+.rh-estrategico-widget .rh-sem-transicao * {
+    transition: none !important;
 }

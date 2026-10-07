@@ -91,6 +91,7 @@ var RHContractView = {
     },
 
     renderizar: function () {
+        var that = this;
         var registros = this.registros;
 
         var resumo = RHContractService.calcularResumo(registros);
@@ -111,12 +112,24 @@ var RHContractView = {
 
         RHCharts.renderContract(this.instanceId, {
             status: {
+                onClick: function (status) {
+                    RHDrilldown.abrirPorCampo(
+                        that.instanceId, that.configDrilldown("todos"),
+                        "status", status, "Contratos · Status"
+                    );
+                },
                 labels: statusOrdenado,
                 valores: statusOrdenado.map(function (status) {
                     return porStatus[status] || 0;
                 })
             },
             tipo: {
+                onClick: function (tipo) {
+                    RHDrilldown.abrirPorCampo(
+                        that.instanceId, that.configDrilldown("todos"),
+                        "tipo", tipo, "Contratos · Tipo"
+                    );
+                },
                 labels: tiposOrdenados,
                 valores: tiposOrdenados.map(function (tipo) {
                     return porTipo[tipo];
@@ -154,6 +167,7 @@ var RHContractView = {
         limite.setDate(hoje.getDate() + servico.LIMITE_DIAS_EXPIRACAO);
 
         var filtros = {
+            todos: function () { return true; },
             ativos: function (item) {
                 var status = servico.calcularStatus(item, hoje, limite);
                 return status === "Ativo" || status === "Prestes a Expirar";
@@ -173,6 +187,7 @@ var RHContractView = {
         };
 
         var titulos = {
+            todos: "Todos os Contratos",
             ativos: "Contratos Determinados Ativos",
             expirando: "Contratos Prestes a Expirar",
             expirados: "Contratos Expirados",

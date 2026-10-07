@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap");
+
 .rh-estrategico-widget {
     background: var(--rh-bg);
     color: var(--rh-text) !important;
@@ -11,117 +13,153 @@
     gap: 16px;
 
     margin-bottom: 16px;
+    /* reserva a faixa dos botões fixos no topo (Exportar + Atualizar + tema) */
+    padding-right: 290px;
 }
 
+/* "Exportar Imagem" fica sempre no mesmo ponto, ao lado de Atualizar/tema,
+   em todas as abas — independente do tamanho do título/subtítulo */
+.rh-section-header > .rh-btn {
+    position: absolute;
+    top: 0;
+    right: 124px;
+    z-index: 3;
+
+    background: linear-gradient(90deg, #0a52a8 0%, #00408A 100%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff !important;
+}
+
+.rh-section-header > .rh-btn:hover {
+    background: linear-gradient(90deg, #1a66c4 0%, #0a52a8 100%);
+}
+
+@media (max-width: 720px) {
+    .rh-section-header {
+        padding-right: 0;
+    }
+
+    .rh-section-header > .rh-btn {
+        position: static;
+    }
+}
+
+/* Título da aba: alinhado na linha dos botões do topo (38px de altura),
+   fonte moderna (Sora, com fallback) e texto em gradiente */
 .rh-section-header h2 {
     margin: 0;
 
-    color: var(--rh-text) !important;
-    font-size: 21px;
+    font-family: "Sora", "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: 30px;
     font-weight: 800;
-    letter-spacing: -0.01em;
+    line-height: 38px;
+    letter-spacing: -0.02em;
+
+    background: linear-gradient(90deg, #00408A 0%, #0a7bd8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Traço de destaque sob o título */
+.rh-section-header h2::after {
+    content: "";
+    display: block;
+    width: 44px;
+    height: 4px;
+    margin-top: 4px;
+
+    background: var(--rh-gradient);
+    border-radius: 999px;
 }
 
 .rh-section-header p {
     margin: 4px 0 0;
 
-    color: var(--rh-text-muted) !important;
+    color: #475569 !important;
     font-size: 13px;
 }
 
-.rh-estrategico-widget .rh-topbar {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 16px;
-
-    margin-bottom: 20px;
-    padding: 20px 28px;
-
-    background: var(--rh-gradient);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: var(--rh-radius-lg);
-    box-shadow: 0 12px 32px rgba(139, 92, 246, 0.4);
-}
-
-.rh-estrategico-widget .rh-topbar-marca {
-    grid-column: 2;
-    justify-self: center;
-
+/* Marca no topo da sidebar: fundo transparente com borda translúcida */
+.rh-estrategico-widget .rh-sidebar-marca {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
+
+    padding: 18px 14px;
+
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: var(--rh-radius-lg);
+    text-align: center;
 }
 
-/* Logo branca, lê direto em cima do gradiente do topbar — não precisa de
-   fundo próprio */
-.rh-estrategico-widget .rh-topbar-selo {
+.rh-estrategico-widget .rh-sidebar-selo {
     display: flex;
     flex: none;
     align-items: center;
 }
 
-.rh-estrategico-widget .rh-topbar-selo img {
+.rh-estrategico-widget .rh-sidebar-selo img {
     display: block;
-    height: 48px;
+    height: 40px;
     width: auto;
 }
 
-.rh-estrategico-widget .rh-topbar-marca h1 {
+.rh-estrategico-widget .rh-sidebar-marca h1 {
     margin: 0;
 
-    color: #ffffff;
-    font-size: 20px;
+    color: #ffffff !important;
+    font-size: 16px;
     font-weight: 800;
     letter-spacing: 0.04em;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     text-transform: uppercase;
-    white-space: nowrap;
 }
 
-.rh-estrategico-widget .rh-topbar-marca p {
+.rh-estrategico-widget .rh-sidebar-marca p {
     margin: 3px 0 0;
 
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.78) !important;
+    font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    white-space: nowrap;
 }
 
-.rh-estrategico-widget .rh-topbar-acoes {
-    grid-column: 3;
-    justify-self: end;
+/* Fica na mesma faixa do título da aba, colado no topo à direita; o botão
+   "Exportar" de cada aba abre espaço para eles via padding do header */
+.rh-estrategico-widget .rh-topo-acoes {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 3;
 
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
-@media (max-width: 640px) {
-    .rh-estrategico-widget .rh-topbar {
-        grid-template-columns: 1fr;
-        justify-items: center;
-        text-align: center;
-    }
-
-    .rh-estrategico-widget .rh-topbar-marca,
-    .rh-estrategico-widget .rh-topbar-acoes {
-        grid-column: 1;
-        justify-self: center;
+@media (max-width: 720px) {
+    .rh-estrategico-widget .rh-topo-acoes {
+        position: static;
+        justify-content: flex-end;
+        margin-bottom: 12px;
     }
 }
 
-.rh-estrategico-widget .rh-topbar-btn {
+.rh-estrategico-widget .rh-topo-btn {
     display: flex;
     align-items: center;
     gap: 8px;
 
-    padding: 9px 18px;
+    height: 38px;
+    padding: 0 16px;
+    box-sizing: border-box;
 
-    background: rgba(255, 255, 255, 0.16);
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: linear-gradient(90deg, #0a52a8 0%, #00408A 100%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 999px;
 
     color: #ffffff;
@@ -132,21 +170,23 @@
     transition: background-color 0.15s ease;
 }
 
-.rh-estrategico-widget .rh-topbar-btn:hover {
-    background: rgba(255, 255, 255, 0.28);
+.rh-estrategico-widget .rh-topo-btn:hover {
+    background: linear-gradient(90deg, #1a66c4 0%, #0a52a8 100%);
 }
 
-.rh-estrategico-widget .rh-topbar-btn svg {
+.rh-estrategico-widget .rh-topo-btn svg {
     flex: none;
     width: 14px;
     height: 14px;
 }
 
-.rh-estrategico-widget .rh-topbar-btn--icone {
-    padding: 9px;
+.rh-estrategico-widget .rh-topo-btn--icone {
+    justify-content: center;
+    width: 38px;
+    padding: 0;
 }
 
-.rh-estrategico-widget .rh-topbar-btn--icone svg {
+.rh-estrategico-widget .rh-topo-btn--icone svg {
     width: 16px;
     height: 16px;
 }
@@ -161,4 +201,126 @@
 
 .rh-estrategico-widget[data-rh-theme="dark"] .rh-icone-sol {
     display: block;
+}
+
+/* Botão de recolher/expandir a sidebar, abaixo do botão de tema */
+.rh-estrategico-widget .rh-sidebar-rodape {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: auto;
+}
+
+.rh-estrategico-widget .rh-sidebar-toggle svg {
+    transition: transform 0.2s ease;
+}
+
+/* Sidebar recolhida: só ícones, logo continua no topo */
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-sidebar {
+    width: 84px;
+    padding: 24px 12px;
+}
+
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-sidebar-marca {
+    padding: 12px 6px;
+    gap: 8px;
+}
+
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-sidebar-selo img {
+    height: 26px;
+}
+
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-sidebar-marca h1,
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-sidebar-marca p,
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-nav-item span {
+    display: none;
+}
+
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-sidebar-toggle svg {
+    transform: rotate(180deg);
+}
+
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-nav-item {
+    justify-content: center;
+    padding: 10px;
+}
+
+.rh-estrategico-widget .rh-sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px;
+
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.rh-estrategico-widget .rh-sidebar-toggle:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.rh-estrategico-widget .rh-sidebar-toggle svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Sidebar recolhida: nome da aba aparece ao passar o mouse no ícone */
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-nav-item {
+    position: relative;
+}
+
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-nav-item::after {
+    content: attr(data-rh-label);
+    position: absolute;
+    left: calc(100% + 14px);
+    top: 50%;
+    z-index: 20;
+
+    padding: 6px 12px;
+
+    background: var(--rh-gradient);
+    border: 0;
+    border-radius: var(--rh-radius-sm);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-4px, -50%);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-nav-item:hover::after,
+.rh-estrategico-widget.rh-sidebar-recolhida .rh-nav-item:focus-visible::after {
+    opacity: 1;
+    transform: translate(0, -50%);
+}
+
+/* Visual padrão dos botões: azul vítreo em degradê com borda clara
+   (mesmo do item ativo do menu) */
+.rh-estrategico-widget .rh-topo-btn,
+.rh-estrategico-widget .rh-section-header > .rh-btn,
+.rh-estrategico-widget .rh-filter-actions .rh-btn {
+    background: linear-gradient(90deg, #4E7DB4 0%, #2861A4 100%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: var(--rh-radius-sm);
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(0, 20, 60, 0.3);
+}
+
+.rh-estrategico-widget .rh-topo-btn:hover,
+.rh-estrategico-widget .rh-section-header > .rh-btn:hover,
+.rh-estrategico-widget .rh-filter-actions .rh-btn:hover {
+    background: linear-gradient(90deg, #5d8cc3 0%, #3570b4 100%);
+    transform: none;
 }

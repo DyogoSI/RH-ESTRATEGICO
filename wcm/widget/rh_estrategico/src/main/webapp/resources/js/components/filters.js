@@ -129,6 +129,22 @@ var RHFilters = {
             $("#" + prefixo + this.instanceId).val("");
         }, this);
 
+        // Os 4 campos avançados de Benefícios, mesma lógica acima
+        [
+            "rhBenefitSecao_", "rhBenefitFuncao_", "rhBenefitPeriodoFolha_", "rhBenefitBeneficio_"
+        ].forEach(function (prefixo) {
+            $("#" + prefixo + this.instanceId).val("");
+        }, this);
+
+        // Os 8 campos avançados de Rescisões, mesma lógica acima
+        [
+            "rhTerminationSecao_", "rhTerminationFuncao_", "rhTerminationCentroCusto_",
+            "rhTerminationMotivo_", "rhTerminationTipo_", "rhTerminationAvisoPrevio_",
+            "rhTerminationFaixaTempo_", "rhTerminationFaixaEtaria_"
+        ].forEach(function (prefixo) {
+            $("#" + prefixo + this.instanceId).val("");
+        }, this);
+
         this.carregarFiliais("");
         this.aplicar();
     }

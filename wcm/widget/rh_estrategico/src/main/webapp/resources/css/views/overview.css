@@ -8,12 +8,17 @@
     margin-top: 24px;
 }
 
+/* minmax(0, 1fr): sem isso a coluna implícita do grid usa a largura do
+   canvas do Chart.js e o carrossel estoura o espaço, passando por baixo
+   do painel de filtros */
 .rh-estrategico-widget .rh-carousel-track {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
 }
 
 .rh-estrategico-widget .rh-carousel-slide {
     grid-area: 1 / 1;
+    min-width: 0;
 
     opacity: 0;
     transform: scale(0.98);

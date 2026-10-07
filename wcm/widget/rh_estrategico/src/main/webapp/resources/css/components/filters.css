@@ -1,22 +1,48 @@
 .rh-estrategico-widget .rh-filters {
     position: relative;
 
+    /* Painel lateral: rola junto com a página */
+    position: relative;
+    z-index: 5;
+    align-self: flex-start;
+    flex: none;
+    width: 280px;
+
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    gap: 16px;
+    flex-direction: column;
+    gap: 14px;
 
-    margin-top: 16px;
-    padding: 16px;
+    padding: 18px;
+    box-sizing: border-box;
 
-    background: var(--rh-glass-bg);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
-    backdrop-filter: blur(18px) saturate(160%);
-    border: 1px solid var(--rh-glass-border);
+    /* Mesmo azul da sidebar, em degradê */
+    background: linear-gradient(180deg, #0a52a8 0%, #00408A 45%, #00244d 100%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: var(--rh-radius-lg);
-    box-shadow: var(--rh-glass-shadow);
+    box-shadow: 0 12px 32px rgba(0, 36, 77, 0.35);
     overflow: hidden;
+}
+
+/* Campos crescem com o painel, sem rolagem interna */
+.rh-estrategico-widget .rh-filters-corpo {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+}
+
+.rh-estrategico-widget .rh-filters-titulo {
+    position: relative;
+    margin: 0;
+
+    color: #ffffff !important;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 }
 
 .rh-estrategico-widget .rh-filters::before {
@@ -28,15 +54,14 @@
 }
 
 .rh-estrategico-widget .rh-filter-group {
-    flex: 0 1 220px;
-    min-width: 180px;
+    flex: none;
 }
 
 .rh-estrategico-widget .rh-filter-group label {
     display: block;
     margin-bottom: 6px;
 
-    color: var(--rh-text-muted) !important;
+    color: rgba(255, 255, 255, 0.78) !important;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -118,9 +143,42 @@
     display: block;
 }
 
+/* Os 8 campos avançados só fazem sentido na aba Rescisões */
+.rh-estrategico-widget .rh-filter-group--termination {
+    display: none;
+}
+
+.rh-estrategico-widget[data-rh-view-atual="termination"] .rh-filter-group--termination {
+    display: block;
+}
+
+/* Os 4 campos avançados só fazem sentido na aba Benefícios */
+.rh-estrategico-widget .rh-filter-group--benefit {
+    display: none;
+}
+
+.rh-estrategico-widget[data-rh-view-atual="benefit"] .rh-filter-group--benefit {
+    display: block;
+}
+
 .rh-estrategico-widget .rh-filter-actions {
+    position: relative;
+    z-index: 1;
+
     display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    margin-left: auto;
+    flex-direction: column;
+    gap: 8px;
+
+    padding-top: 14px;
+    border-top: 1px solid var(--rh-glass-border);
+}
+
+.rh-estrategico-widget .rh-filter-actions .rh-btn {
+    width: 100%;
+}
+
+@media (max-width: 720px) {
+    .rh-estrategico-widget .rh-filters {
+        width: 100%;
+    }
 }

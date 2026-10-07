@@ -7,27 +7,10 @@ var RHTheme = {
     init: function (instanceId) {
         this.instanceId = instanceId;
 
-        this.aplicar(this.lerPreferencia(), false);
-        this.bindBotao();
+        this.aplicar(true, false);
     },
 
-    // Sem preferência salva ainda, o padrão agora é o tema escuro — só cai
-    // pro claro se a pessoa já tiver escolhido isso explicitamente antes
-    lerPreferencia: function () {
-        try {
-            return window.localStorage.getItem(this.CHAVE_ARMAZENAMENTO) !== "claro";
-        } catch (e) {
-            return true;
-        }
-    },
-
-    salvarPreferencia: function (escuro) {
-        try {
-            window.localStorage.setItem(this.CHAVE_ARMAZENAMENTO, escuro ? "escuro" : "claro");
-        } catch (e) {
-            // localStorage indisponível (navegação privada, etc.) - sem persistência, sem quebrar
-        }
-    },
+    // Painel com um único tema (escuro): não há mais botão de alternância
 
     aplicar: function (escuro, recarregarDados) {
         var raiz = document.getElementById("RHEstrategico_" + this.instanceId);
@@ -49,19 +32,6 @@ var RHTheme = {
         if (recarregarDados && typeof RHApp !== "undefined") {
             RHApp.atualizar();
         }
-    },
-
-    bindBotao: function () {
-        var that = this;
-
-        $("#rhTopbarTema_" + this.instanceId)
-            .off("click.rhTema")
-            .on("click.rhTema", function () {
-                var novoEstado = !that.lerPreferencia();
-
-                that.salvarPreferencia(novoEstado);
-                that.aplicar(novoEstado, true);
-            });
     }
 
 };

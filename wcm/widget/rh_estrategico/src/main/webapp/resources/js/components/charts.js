@@ -420,12 +420,19 @@ var RHCharts = {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                onHover: RHCharts.barraHover(dados),
+                onClick: RHCharts.barraClick(dados),
 
                 plugins: {
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardBarra(dados)
+                    },
                     legend: {
                         position: "bottom",
                         labels: {
-                            color: this.corTexto()
+                            color: "#475569"
                         }
                     }
                 },
@@ -434,17 +441,17 @@ var RHCharts = {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            color: this.corTexto(),
+                            color: "#475569",
                             precision: 0
                         },
                         grid: {
-                            color: this.corGrade()
+                            color: "#e2e8f0"
                         }
                     },
 
                     x: {
                         ticks: {
-                            color: this.corTexto()
+                            color: "#475569"
                         },
                         grid: {
                             display: false
@@ -487,20 +494,22 @@ var RHCharts = {
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: "68%",
+                onHover: RHCharts.roscaHover(dados),
+                onClick: RHCharts.roscaClick(dados),
                 radius: "82%",
 
                 plugins: {
                     legend: {
                         position: "bottom",
                         labels: {
-                            color: this.corTexto(),
+                            color: "#475569",
+                            rhCorFixa: "#475569",
                             generateLabels: this.legendaCoresPlanas
                         }
                     },
                     tooltip: {
-                        callbacks: {
-                            labelColor: this.tooltipCorPlana
-                        }
+                        enabled: false,
+                        external: this.tooltipCardFerias(instanceId, { rotulo: "Colaboradores", dica: "" })
                     }
                 }
             }
@@ -538,12 +547,19 @@ var RHCharts = {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                onHover: RHCharts.barraHover(dados),
+                onClick: RHCharts.barraClick(dados),
 
                 plugins: {
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardBarra(dados)
+                    },
                     legend: {
                         position: "bottom",
                         labels: {
-                            color: this.corTexto()
+                            color: "#475569"
                         }
                     }
                 },
@@ -552,14 +568,14 @@ var RHCharts = {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            color: this.corTexto(),
+                            color: "#475569",
                             precision: 0
                         }
                     },
 
                     x: {
                         ticks: {
-                            color: this.corTexto()
+                            color: "#475569"
                         },
                         grid: {
                             display: false
@@ -598,20 +614,22 @@ var RHCharts = {
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: "68%",
+                onHover: RHCharts.roscaHover(dados),
+                onClick: RHCharts.roscaClick(dados),
                 radius: "82%",
 
                 plugins: {
                     legend: {
                         position: "bottom",
                         labels: {
-                            color: this.corTexto(),
+                            color: "#475569",
+                            rhCorFixa: "#475569",
                             generateLabels: this.legendaCoresPlanas
                         }
                     },
                     tooltip: {
-                        callbacks: {
-                            labelColor: this.tooltipCorPlana
-                        }
+                        enabled: false,
+                        external: this.tooltipCardFerias(instanceId, { rotulo: "Admissões", dica: "" })
                     }
                 }
             }
@@ -741,10 +759,119 @@ var RHCharts = {
         });
     },
 
-    // Tooltip HTML em card branco (mesmo visual do gráfico Saldo x Dias Gozados)
-    tooltipCardFerias: function (instanceId) {
+    // Clique/hover de rosca: só ativa quando a view passa dados.onClick(label)
+    roscaHover: function (dados) {
+        return function (evento, ativos) {
+            evento.native.target.style.cursor =
+                ativos.length && dados.onClick ? "pointer" : "default";
+        };
+    },
+
+    roscaClick: function (dados) {
+        return function (evento, ativos) {
+            if (!ativos.length || !dados.onClick) return;
+
+            dados.onClick(dados.labels[ativos[0].index]);
+        };
+    },
+
+    // Clique/hover de barra: só ativa quando a view passa dados.onClick(label)
+    barraHover: function (dados) {
+        return function (evento, ativos) {
+            evento.native.target.style.cursor =
+                ativos.length && dados.onClick ? "pointer" : "default";
+        };
+    },
+
+    barraClick: function (dados) {
+        return function (evento, ativos) {
+            if (!ativos.length || !dados.onClick) return;
+
+            dados.onClick(dados.labels[ativos[0].index], ativos[0].datasetIndex);
+        };
+    },
+
+    // Tooltip HTML em card branco para gráficos de barra (mesmo visual da aba Férias)
+    tooltipCardBarra: function (dados) {
         var escapar = function (txt) {
             return $("<div>").text(txt).html();
+        };
+
+        return function (context) {
+            var chart = context.chart;
+            var tooltip = context.tooltip;
+            var pai = chart.canvas.parentNode;
+            var el = pai.querySelector(".rh-card-tooltip");
+
+            if (!el) {
+                el = document.createElement("div");
+                el.className = "rh-card-tooltip";
+                el.style.cssText =
+                    "position:absolute;pointer-events:none;z-index:50;" +
+                    "background:#fff;border:1px solid #e2e8f0;" +
+                    "border-radius:14px;padding:14px;font-size:12px;" +
+                    "color:#334155;box-shadow:0 12px 36px rgba(15,23,42,.12);" +
+                    "transition:opacity .12s ease;white-space:nowrap;";
+                pai.style.position = "relative";
+                pai.appendChild(el);
+            }
+
+            if (tooltip.opacity === 0 || !tooltip.dataPoints || !tooltip.dataPoints.length) {
+                el.style.opacity = 0;
+                return;
+            }
+
+            var titulo = (tooltip.title && tooltip.title[0]) || "";
+
+            var linhas = tooltip.dataPoints.map(function (ponto) {
+                var cor = ponto.dataset.rhCorBase || "#6366f1";
+
+                return '<div style="display:flex;justify-content:space-between;gap:24px;margin-bottom:7px;">' +
+                    '<span style="color:#64748b;">' +
+                    '<span style="display:inline-block;width:7px;height:7px;margin-right:7px;' +
+                    'border-radius:50%;background:' + cor + ';"></span>' +
+                    escapar(ponto.dataset.label || "") + '</span>' +
+                    '<strong style="color:#0f172a;">' + escapar(
+                        dados && dados.formatar ? dados.formatar(ponto.raw) : ponto.formattedValue
+                    ) + '</strong></div>';
+            }).join("");
+
+            el.innerHTML =
+                '<div style="min-width:180px">' +
+                '<div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:10px;">' +
+                escapar(titulo) + '</div>' + linhas +
+                (dados && dados.onClick
+                    ? '<div style="margin-top:3px;padding-top:9px;border-top:1px solid #f1f5f9;' +
+                    'color:#6366f1;font-size:10px;font-weight:700;">Clique para detalhar</div>'
+                    : '') +
+                '</div>';
+
+            var x = tooltip.caretX + 14;
+            var y = tooltip.caretY - el.offsetHeight / 2;
+
+            if (x + el.offsetWidth > pai.clientWidth) {
+                x = tooltip.caretX - el.offsetWidth - 14;
+            }
+
+            x = Math.max(0, x);
+            y = Math.max(0, Math.min(y, pai.clientHeight - el.offsetHeight));
+
+            el.style.left = x + "px";
+            el.style.top = y + "px";
+            el.style.opacity = 1;
+        };
+    },
+
+    // Tooltip HTML em card branco (mesmo visual do gráfico Saldo x Dias Gozados)
+    tooltipCardFerias: function (instanceId, opcoes) {
+        opcoes = opcoes || {};
+        var escapar = function (txt) {
+            return $("<div>").text(txt).html();
+        };
+        // Por padrão mostra o número cru (contagens); gráficos de valores
+        // passam "formatar" pra exibir em R$
+        var formatar = opcoes.formatar || function (numero) {
+            return numero;
         };
 
         return function (context) {
@@ -793,12 +920,14 @@ var RHCharts = {
                 '<div style="min-width:190px">' +
                 '<div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:10px;">' +
                 escapar(ponto.label) + '</div>' +
-                linha("Férias", valor, cor) +
+                linha(opcoes.rotulo || "Férias", formatar(valor), cor) +
                 linha("Participação", pct.replace(".", ",") + "%") +
-                linha("Total geral", total, null, true) +
-                '<div style="margin-top:10px;padding-top:9px;border-top:1px solid #f1f5f9;' +
-                'color:#6366f1;font-size:10px;font-weight:700;">' +
-                'Clique para ver os colaboradores</div>' +
+                linha("Total geral", formatar(total), null, true) +
+                (opcoes.dica === ""
+                    ? ''
+                    : '<div style="margin-top:10px;padding-top:9px;border-top:1px solid #f1f5f9;' +
+                    'color:#6366f1;font-size:10px;font-weight:700;">' +
+                    (opcoes.dica || 'Clique para ver os colaboradores') + '</div>') +
                 '</div>';
 
             var pai = chart.canvas.parentNode;
@@ -860,20 +989,22 @@ var RHCharts = {
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: "68%",
+                onHover: RHCharts.roscaHover(dados),
+                onClick: RHCharts.roscaClick(dados),
                 radius: "82%",
 
                 plugins: {
                     legend: {
                         position: "bottom",
                         labels: {
-                            color: this.corTexto(),
+                            color: "#475569",
+                            rhCorFixa: "#475569",
                             generateLabels: this.legendaCoresPlanas
                         }
                     },
                     tooltip: {
-                        callbacks: {
-                            labelColor: this.tooltipCorPlana
-                        }
+                        enabled: false,
+                        external: this.tooltipCardFerias(instanceId, { rotulo: "Contratos", dica: "" })
                     }
                 }
             }
@@ -906,8 +1037,15 @@ var RHCharts = {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                onHover: RHCharts.barraHover(dados),
+                onClick: RHCharts.barraClick(dados),
 
                 plugins: {
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardBarra(dados)
+                    },
                     legend: {
                         display: false
                     }
@@ -917,17 +1055,17 @@ var RHCharts = {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            color: this.corTexto(),
+                            color: "#475569",
                             precision: 0
                         },
                         grid: {
-                            color: this.corGrade()
+                            color: "#e2e8f0"
                         }
                     },
 
                     x: {
                         ticks: {
-                            color: this.corTexto()
+                            color: "#475569"
                         },
                         grid: {
                             display: false
@@ -982,20 +1120,22 @@ var RHCharts = {
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: "68%",
+                onHover: RHCharts.roscaHover(dados),
+                onClick: RHCharts.roscaClick(dados),
                 radius: "82%",
 
                 plugins: {
                     legend: {
                         position: "bottom",
                         labels: {
-                            color: this.corTexto(),
+                            color: "#475569",
+                            rhCorFixa: "#475569",
                             generateLabels: this.legendaCoresPlanas
                         }
                     },
                     tooltip: {
-                        callbacks: {
-                            labelColor: this.tooltipCorPlana
-                        }
+                        enabled: false,
+                        external: this.tooltipCardFerias(instanceId, { rotulo: "Colaboradores", dica: "" })
                     }
                 }
             }
@@ -1030,8 +1170,15 @@ var RHCharts = {
                 indexAxis: "y",
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                onHover: RHCharts.barraHover(dados),
+                onClick: RHCharts.barraClick(dados),
 
                 plugins: {
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardBarra(dados)
+                    },
                     legend: {
                         display: false
                     }
@@ -1041,17 +1188,17 @@ var RHCharts = {
                     x: {
                         beginAtZero: true,
                         ticks: {
-                            color: this.corTexto(),
+                            color: "#475569",
                             precision: 0
                         },
                         grid: {
-                            color: this.corGrade()
+                            color: "#e2e8f0"
                         }
                     },
 
                     y: {
                         ticks: {
-                            color: this.corTexto()
+                            color: "#475569"
                         },
                         grid: {
                             display: false
@@ -1096,20 +1243,22 @@ var RHCharts = {
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: "68%",
+                onHover: RHCharts.roscaHover(dados),
+                onClick: RHCharts.roscaClick(dados),
                 radius: "82%",
 
                 plugins: {
                     legend: {
                         position: "bottom",
                         labels: {
-                            color: this.corTexto(),
+                            color: "#475569",
+                            rhCorFixa: "#475569",
                             generateLabels: this.legendaCoresPlanas
                         }
                     },
                     tooltip: {
-                        callbacks: {
-                            labelColor: this.tooltipCorPlana
-                        }
+                        enabled: false,
+                        external: this.tooltipCardFerias(instanceId, { rotulo: "Afastamentos", dica: "" })
                     }
                 }
             }
@@ -1142,8 +1291,15 @@ var RHCharts = {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                onHover: RHCharts.barraHover(dados),
+                onClick: RHCharts.barraClick(dados),
 
                 plugins: {
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardBarra(dados)
+                    },
                     legend: {
                         display: false
                     }
@@ -1153,17 +1309,17 @@ var RHCharts = {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            color: this.corTexto(),
+                            color: "#475569",
                             precision: 0
                         },
                         grid: {
-                            color: this.corGrade()
+                            color: "#e2e8f0"
                         }
                     },
 
                     x: {
                         ticks: {
-                            color: this.corTexto()
+                            color: "#475569"
                         },
                         grid: {
                             display: false
@@ -1201,8 +1357,15 @@ var RHCharts = {
                 indexAxis: "y",
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                onHover: RHCharts.barraHover(dados),
+                onClick: RHCharts.barraClick(dados),
 
                 plugins: {
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardBarra(dados)
+                    },
                     legend: {
                         display: false
                     }
@@ -1212,17 +1375,489 @@ var RHCharts = {
                     x: {
                         beginAtZero: true,
                         ticks: {
-                            color: this.corTexto(),
+                            color: "#475569",
                             precision: 0
                         },
                         grid: {
-                            color: this.corGrade()
+                            color: "#e2e8f0"
                         }
                     },
 
                     y: {
                         ticks: {
-                            color: this.corTexto()
+                            color: "#475569"
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    },
+
+    renderTermination: function (instanceId, dados) {
+        this.renderTerminationMes(instanceId, dados.mes);
+        this.renderTerminationMotivo(instanceId, dados.motivo);
+        this.renderTerminationFaixaTempo(instanceId, dados.faixaTempo);
+    },
+
+    renderTerminationMes: function (instanceId, dados) {
+        var key = "terminationMes_" + instanceId;
+        var canvas = document.getElementById("rhTerminationChartMes_" + instanceId);
+
+        if (!canvas) return;
+
+        this.destroy(key);
+
+        this.instances[key] = new Chart(canvas, {
+            type: "bar",
+
+            data: {
+                labels: dados.labels,
+
+                datasets: [{
+                    label: "Rescisões",
+                    data: dados.valores,
+                    rhCorBase: "#dc2626",
+                    backgroundColor: this.gradienteBarra("#dc2626", "#fb923c", false),
+                    borderRadius: 5
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                onHover: RHCharts.barraHover(dados),
+                onClick: RHCharts.barraClick(dados),
+
+                plugins: {
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardBarra(dados)
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: "#475569",
+                            precision: 0
+                        },
+                        grid: {
+                            color: "#e2e8f0"
+                        }
+                    },
+
+                    x: {
+                        ticks: {
+                            color: "#475569"
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    },
+
+    renderTerminationMotivo: function (instanceId, dados) {
+        var key = "terminationMotivo_" + instanceId;
+        var canvas = document.getElementById("rhTerminationChartMotivo_" + instanceId);
+
+        if (!canvas) return;
+
+        this.destroy(key);
+
+        this.instances[key] = new Chart(canvas, {
+            type: "doughnut",
+
+            data: {
+                labels: dados.labels,
+
+                datasets: [{
+                    data: dados.valores,
+                    rhCoresBase: this.coresCategoricas(dados.valores.length),
+                    backgroundColor: this.gradienteRadialFatias(this.coresCategoricas(dados.valores.length)),
+                    hoverBackgroundColor: this.gradienteRadialFatias(this.coresCategoricas(dados.valores.length)),
+                    borderWidth: 0,
+                    hoverOffset: 6
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "68%",
+                onHover: RHCharts.roscaHover(dados),
+                onClick: RHCharts.roscaClick(dados),
+                radius: "82%",
+
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                        labels: {
+                            color: "#475569",
+                            rhCorFixa: "#475569",
+                            generateLabels: this.legendaCoresPlanas
+                        }
+                    },
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardFerias(instanceId, { rotulo: "Rescisões", dica: "" })
+                    }
+                }
+            }
+        });
+    },
+
+    renderTerminationFaixaTempo: function (instanceId, dados) {
+        var key = "terminationFaixaTempo_" + instanceId;
+        var canvas = document.getElementById("rhTerminationChartFaixaTempo_" + instanceId);
+
+        if (!canvas) return;
+
+        this.destroy(key);
+
+        this.instances[key] = new Chart(canvas, {
+            type: "bar",
+
+            data: {
+                labels: dados.labels,
+
+                datasets: [{
+                    label: "Rescisões",
+                    data: dados.valores,
+                    rhCorBase: "#8b5cf6",
+                    backgroundColor: this.gradienteBarra("#8b5cf6", "#06b6d4", true),
+                    borderRadius: 5
+                }]
+            },
+
+            options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                onHover: RHCharts.barraHover(dados),
+                onClick: RHCharts.barraClick(dados),
+
+                plugins: {
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardBarra(dados)
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: "#475569",
+                            precision: 0
+                        },
+                        grid: {
+                            color: "#e2e8f0"
+                        }
+                    },
+
+                    y: {
+                        ticks: {
+                            color: "#475569"
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    },
+
+    // =========================
+    // Benefícios
+    // =========================
+
+    formatarMoeda: function (valor) {
+        return Number(valor || 0).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+    },
+
+    // Rótulo curto pro eixo de valores: "R$ 1,2 mi", "R$ 350 mil", "R$ 900"
+    moedaCompacta: function (valor) {
+        var numero = Number(valor) || 0;
+        var absoluto = Math.abs(numero);
+
+        if (absoluto >= 1000000) {
+            return "R$ " + (numero / 1000000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " mi";
+        }
+
+        if (absoluto >= 1000) {
+            return "R$ " + (numero / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 0 }) + " mil";
+        }
+
+        return "R$ " + numero.toLocaleString("pt-BR", { maximumFractionDigits: 0 });
+    },
+
+    renderBenefit: function (instanceId, dados) {
+        this.renderBenefitMes(instanceId, dados.mes);
+        this.renderBenefitGrupo(instanceId, dados.grupo);
+
+        this.renderBenefitRanking(instanceId, "benefitBeneficio_", "rhBenefitChartBeneficio_", dados.beneficio, {
+            rotulo: "Custo",
+            dinheiro: true
+        });
+
+        this.renderBenefitRanking(instanceId, "benefitColaboradores_", "rhBenefitChartColaboradores_", dados.colaboradores, {
+            rotulo: "Colaboradores",
+            dinheiro: false
+        });
+
+        this.renderBenefitRanking(instanceId, "benefitFilial_", "rhBenefitChartFilial_", dados.filial, {
+            rotulo: "Custo",
+            dinheiro: true
+        });
+
+        this.renderBenefitRanking(instanceId, "benefitSecao_", "rhBenefitChartSecao_", dados.secao, {
+            rotulo: "Custo",
+            dinheiro: true
+        });
+    },
+
+    // Barras empilhadas por competência (empresa x colaborador x outros)
+    renderBenefitMes: function (instanceId, dados) {
+        var key = "benefitMes_" + instanceId;
+        var canvas = document.getElementById("rhBenefitChartMes_" + instanceId);
+
+        if (!canvas) return;
+
+        this.destroy(key);
+
+        this.instances[key] = new Chart(canvas, {
+            type: "bar",
+
+            data: {
+                labels: dados.labels,
+
+                datasets: dados.series.map(function (serie) {
+                    return {
+                        label: serie.label,
+                        data: serie.valores,
+                        rhCorBase: serie.cor,
+                        backgroundColor: serie.cor,
+                        borderRadius: 3
+                    };
+                })
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                onHover: RHCharts.barraHover(dados),
+                onClick: RHCharts.barraClick(dados),
+
+                plugins: {
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardBarra({
+                            onClick: dados.onClick,
+                            formatar: RHCharts.formatarMoeda
+                        })
+                    },
+                    legend: {
+                        position: "bottom",
+                        labels: {
+                            color: "#475569"
+                        }
+                    }
+                },
+
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            color: "#475569",
+                            maxRotation: 0
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            color: "#475569",
+                            callback: function (valor) {
+                                return RHCharts.moedaCompacta(valor);
+                            }
+                        },
+                        grid: {
+                            color: "#e2e8f0"
+                        }
+                    }
+                }
+            }
+        });
+    },
+
+    renderBenefitGrupo: function (instanceId, dados) {
+        var key = "benefitGrupo_" + instanceId;
+        var canvas = document.getElementById("rhBenefitChartGrupo_" + instanceId);
+
+        if (!canvas) return;
+
+        this.destroy(key);
+
+        // Sem lançamento no recorte não há fatia nem cor; o gradiente das
+        // fatias exige ao menos uma cor base (senão quebra e deixa o canvas
+        // "preso" a um gráfico pela metade)
+        var cores = dados.cores.length ? dados.cores : ["#cbd5e1"];
+
+        this.instances[key] = new Chart(canvas, {
+            type: "doughnut",
+
+            data: {
+                labels: dados.labels,
+
+                datasets: [{
+                    data: dados.valores,
+                    rhCoresBase: cores,
+                    backgroundColor: this.gradienteRadialFatias(cores),
+                    hoverBackgroundColor: this.gradienteRadialFatias(cores),
+                    borderWidth: 0,
+                    hoverOffset: 6
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "68%",
+                onHover: RHCharts.roscaHover(dados),
+                onClick: RHCharts.roscaClick(dados),
+                radius: "82%",
+
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                        labels: {
+                            color: "#475569",
+                            rhCorFixa: "#475569",
+                            generateLabels: this.legendaCoresPlanas
+                        }
+                    },
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardFerias(instanceId, {
+                            rotulo: "Valor",
+                            formatar: RHCharts.formatarMoeda
+                        })
+                    }
+                }
+            }
+        });
+    },
+
+    // Ranking em barras horizontais (por benefício, filial, seção...).
+    // "dinheiro" troca o formato do eixo e do tooltip de contagem pra R$
+    renderBenefitRanking: function (instanceId, chavePrefixo, canvasPrefixo, dados, opcoes) {
+        var key = chavePrefixo + instanceId;
+        var canvas = document.getElementById(canvasPrefixo + instanceId);
+
+        if (!canvas) return;
+
+        this.destroy(key);
+
+        // maxRotation 0: rótulos na horizontal; se não couberem, o Chart.js
+        // pula alguns em vez de inclinar
+        var eixoValores = opcoes.dinheiro
+            ? {
+                color: "#475569",
+                maxRotation: 0,
+                callback: function (valor) {
+                    return RHCharts.moedaCompacta(valor);
+                }
+            }
+            : {
+                color: "#475569",
+                maxRotation: 0,
+                precision: 0
+            };
+
+        this.instances[key] = new Chart(canvas, {
+            type: "bar",
+
+            data: {
+                labels: dados.labels,
+
+                datasets: [{
+                    label: opcoes.rotulo,
+                    data: dados.valores,
+                    rhCorBase: "#8b5cf6",
+                    backgroundColor: this.gradienteBarra("#8b5cf6", "#06b6d4", true),
+                    borderRadius: 5
+                }]
+            },
+
+            options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: "index", intersect: false },
+                onHover: RHCharts.barraHover(dados),
+                onClick: RHCharts.barraClick(dados),
+
+                plugins: {
+                    tooltip: {
+                        enabled: false,
+                        external: this.tooltipCardBarra({
+                            onClick: dados.onClick,
+                            formatar: opcoes.dinheiro ? RHCharts.formatarMoeda : null
+                        })
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: eixoValores,
+                        grid: {
+                            color: "#e2e8f0"
+                        }
+                    },
+
+                    y: {
+                        ticks: {
+                            color: "#475569",
+                            // Nomes longos (filiais, seções) são cortados só no
+                            // eixo; o tooltip e o clique usam o nome completo.
+                            // O Chart.js limita o eixo vertical a ~40% da
+                            // largura do gráfico e corta o início do texto que
+                            // passa disso, então o tamanho máximo acompanha a
+                            // largura do card (~7,5px por caractere)
+                            callback: function (valor) {
+                                var rotulo = String(this.getLabelForValue(valor));
+                                var maximo = Math.max(12, Math.floor((this.chart.width * 0.36) / 7.5));
+
+                                return rotulo.length > maximo ? rotulo.slice(0, maximo - 1) + "…" : rotulo;
+                            }
                         },
                         grid: {
                             display: false

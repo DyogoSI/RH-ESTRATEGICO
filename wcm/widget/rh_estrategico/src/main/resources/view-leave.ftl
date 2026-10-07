@@ -44,7 +44,7 @@
     <div id="rhLeaveDrilldown_${instanceId}" class="rh-drilldown"></div>
 
     <div class="rh-chart-grid">
-        <div class="rh-chart-card">
+        <div class="rh-chart-card rh-light">
             <div class="rh-chart-header">
                 <div>
                     <h3>Por Tipo de Afastamento</h3>
@@ -55,7 +55,7 @@
                 <canvas id="rhLeaveChartTipo_${instanceId}"></canvas>
             </div>
         </div>
-        <div class="rh-chart-card">
+        <div class="rh-chart-card rh-light">
             <div class="rh-chart-header">
                 <div>
                     <h3>Por Duração</h3>
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <div class="rh-chart-card rh-leave-ranking">
+    <div class="rh-chart-card rh-leave-ranking rh-light">
         <div class="rh-chart-header">
             <div>
                 <h3>Ranking de Dias Perdidos por Seção</h3>
@@ -97,7 +97,7 @@
     </div>
 
     <div class="rh-table-grid rh-table-grid--single">
-        <div class="rh-table-card">
+        <div class="rh-table-card rh-light" data-rh-kpi="afastadosAgora">
             <div class="rh-chart-header">
                 <div>
                     <h3>Afastados com Mais de 30 Dias</h3>
@@ -117,6 +117,7 @@
                 </thead>
                 <tbody id="rhLeaveTabelaLongoPrazo_${instanceId}"></tbody>
             </table>
+            <span class="rh-table-hint">Clique para ver os afastados</span>
         </div>
     </div>
 </section>

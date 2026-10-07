@@ -149,6 +149,7 @@ var RHLeaveView = {
     },
 
     renderizar: function () {
+        var that = this;
         var registros = this.registros;
         var resumo = RHLeaveService.calcularResumo(registros);
 
@@ -170,18 +171,39 @@ var RHLeaveView = {
 
         RHCharts.renderLeave(this.instanceId, {
             tipo: {
+                onClick: function (tipo) {
+                    RHDrilldown.abrirPorCampo(
+                        that.instanceId, that.configDrilldown("total"),
+                        "tipo", tipo, "Afastamentos · Tipo"
+                    );
+                },
                 labels: tiposOrdenados,
                 valores: tiposOrdenados.map(function (tipo) {
                     return porTipo[tipo];
                 })
             },
             duracao: {
+                onClick: function (faixa) {
+                    RHDrilldown.abrirFiltrado(
+                        that.instanceId, that.configDrilldown("total"),
+                        function (linha) {
+                            return RHLeaveService.faixaDuracao(linha.dias) === faixa;
+                        },
+                        faixa, "Afastamentos · Duração"
+                    );
+                },
                 labels: duracaoOrdenada,
                 valores: duracaoOrdenada.map(function (faixa) {
                     return porDuracao[faixa] || 0;
                 })
             },
             ranking: {
+                onClick: function (secao) {
+                    RHDrilldown.abrirPorCampo(
+                        that.instanceId, that.configDrilldown("total"),
+                        "secao", secao, "Afastamentos · Seção"
+                    );
+                },
                 labels: ranking.map(function (item) {
                     return item.secao;
                 }),

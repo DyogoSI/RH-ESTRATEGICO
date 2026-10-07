@@ -1,0 +1,11 @@
+.rh-estrategico-widget .rh-termination {
+    margin-top: 32px;
+}
+
+.rh-estrategico-widget .rh-termination-kpis {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.rh-estrategico-widget .rh-termination-ranking {
+    margin-top: 16px;
+}

@@ -1,6 +1,7 @@
 .rh-estrategico-widget {
     --rh-bg: #f5f6fb;
     --rh-card: rgba(255, 255, 255, 0.6);
+    --rh-card-solid: #ffffff;
     --rh-border: #e9e9f5;
 
     --rh-text: #1e1b4b;
@@ -44,6 +45,7 @@
 .rh-estrategico-widget[data-rh-theme="dark"] {
     --rh-bg: #0f1222;
     --rh-card: rgba(26, 29, 53, 0.55);
+    --rh-card-solid: #232650;
     --rh-border: #2c2f4a;
 
     --rh-text: #e7e8f5;

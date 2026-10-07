@@ -12,10 +12,10 @@
     padding: 10px 12px;
 
     background: transparent;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: var(--rh-radius-sm);
 
-    color: var(--rh-text-muted) !important;
+    color: rgba(255, 255, 255, 0.78) !important;
     font-size: 13px;
     font-weight: 700;
     text-align: left;
@@ -31,14 +31,15 @@
 }
 
 .rh-estrategico-widget .rh-nav-item:hover {
-    color: var(--rh-text) !important;
-    background: var(--rh-gradient-soft);
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.14);
 }
 
 .rh-estrategico-widget .rh-nav-item.active {
-    background: var(--rh-gradient);
+    background: linear-gradient(90deg, #4E7DB4 0%, #2861A4 100%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
     color: #ffffff !important;
-    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+    box-shadow: 0 4px 14px rgba(0, 20, 60, 0.3);
 }
 
 .rh-estrategico-widget .rh-view-container {

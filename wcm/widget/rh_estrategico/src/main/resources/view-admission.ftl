@@ -84,7 +84,7 @@
     <div id="rhAdmissionDrilldown_${instanceId}" class="rh-drilldown"></div>
 
     <div class="rh-chart-grid">
-        <div class="rh-chart-card">
+        <div class="rh-chart-card rh-light">
             <div class="rh-chart-header">
                 <div>
                     <h3>Admissões por Mês</h3>
@@ -95,7 +95,7 @@
                 <canvas id="rhAdmissionChartMes_${instanceId}"></canvas>
             </div>
         </div>
-        <div class="rh-chart-card">
+        <div class="rh-chart-card rh-light">
             <div class="rh-chart-header">
                 <div>
                     <h3>Tipo de Contratação</h3>

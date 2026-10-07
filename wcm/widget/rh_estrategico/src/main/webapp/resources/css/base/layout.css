@@ -1,24 +1,10 @@
-.fluig-style-guide.rh-estrategico-widget {
-    background:
-        radial-gradient(circle at 8% 12%, rgba(139, 92, 246, 0.22), transparent 42%),
-        radial-gradient(circle at 92% 8%, rgba(6, 182, 212, 0.22), transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.18), transparent 48%),
-        radial-gradient(circle at 10% 90%, rgba(59, 130, 246, 0.16), transparent 45%),
-        linear-gradient(160deg, #f3f0ff 0%, #eef2ff 35%, #e6f7fb 100%)
-        !important;
+/* Fundo cinza azulado (#CDD5E1) em degradê, nos dois seletores de tema */
+.fluig-style-guide.rh-estrategico-widget,
+.fluig-style-guide.rh-estrategico-widget[data-rh-theme="dark"] {
+    background: linear-gradient(160deg, #e3e8f0 0%, #CDD5E1 50%, #b4bfd0 100%) !important;
     color: var(--rh-text) !important;
     padding: 20px;
     border-radius: var(--rh-radius-lg);
-}
-
-.fluig-style-guide.rh-estrategico-widget[data-rh-theme="dark"] {
-    background:
-        radial-gradient(circle at 8% 12%, rgba(139, 92, 246, 0.35), transparent 42%),
-        radial-gradient(circle at 92% 8%, rgba(6, 182, 212, 0.3), transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.25), transparent 48%),
-        radial-gradient(circle at 10% 90%, rgba(59, 130, 246, 0.22), transparent 45%),
-        linear-gradient(160deg, #12142a 0%, #0f1222 50%, #0c0f1f 100%)
-        !important;
 }
 
 .rh-estrategico-widget .rh-main-content,
@@ -27,7 +13,8 @@
 }
 
 .rh-main-content {
-    margin-top: 24px;
+    min-width: 0;
+    margin-top: 0;
 }
 
 .rh-estrategico-widget .rh-shell {
@@ -37,6 +24,9 @@
 }
 
 .rh-estrategico-widget .rh-sidebar {
+    position: relative;
+    /* acima do conteúdo, senão o tooltip da sidebar recolhida fica por baixo */
+    z-index: 10;
     flex: none;
     width: 268px;
 
@@ -46,15 +36,18 @@
 
     padding: 24px 18px;
 
-    background: var(--rh-card);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
-    backdrop-filter: blur(18px) saturate(160%);
-    border: 1px solid var(--rh-glass-border);
-    border-radius: var(--rh-radius-lg);
+    /* Azul escuro da marca (#00408A) em degradê */
+    background: linear-gradient(180deg, #0a52a8 0%, #00408A 45%, #00244d 100%);
+    /* Colada na borda do widget: anula o padding de 20px do container */
+    margin: -20px 0 -20px -20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-left: 0;
+    border-radius: var(--rh-radius-lg) 0 0 var(--rh-radius-lg);
     box-shadow: var(--rh-glass-shadow);
 }
 
 .rh-estrategico-widget .rh-content {
+    position: relative;
     flex: 1 1 0%;
     min-width: 0;
 }
@@ -66,6 +59,9 @@
 
     .rh-estrategico-widget .rh-sidebar {
         width: 100%;
+        margin: 0;
+        border-left: 1px solid var(--rh-glass-border);
+        border-radius: var(--rh-radius-lg);
     }
 }
 

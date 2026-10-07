@@ -93,6 +93,7 @@ var RHQuotaView = {
     },
 
     atualizar: function () {
+        var that = this;
         var filtros = RHState.getFiltros();
 
         var registrosPcd = RHQuotaService.buscarPcd(filtros);
@@ -132,12 +133,24 @@ var RHQuotaView = {
 
         RHCharts.renderQuota(this.instanceId, {
             statusPcd: {
+                onClick: function (status) {
+                    RHDrilldown.abrirPorCampo(
+                        that.instanceId, that.configDrilldown("pcdTabela"),
+                        "status", status, "Cota PCD · Status"
+                    );
+                },
                 labels: statusOrdenado,
                 valores: statusOrdenado.map(function (status) {
                     return statusPcd[status] || 0;
                 })
             },
             statusAprendiz: {
+                onClick: function (status) {
+                    RHDrilldown.abrirPorCampo(
+                        that.instanceId, that.configDrilldown("aprendizTabela"),
+                        "status", status, "Cota Aprendiz · Status"
+                    );
+                },
                 labels: statusOrdenado,
                 valores: statusOrdenado.map(function (status) {
                     return statusAprendiz[status] || 0;
@@ -260,6 +273,32 @@ var RHQuotaView = {
         }
 
         var configs = {
+            pcdTabela: {
+                titulo: "Cumprimento PCD por Filial",
+                colunas: [
+                    { campo: "filial", rotulo: "Filial" },
+                    { campo: "base", rotulo: "Base" },
+                    { campo: "cota", rotulo: "Cota" },
+                    { campo: "atual", rotulo: "Atual" },
+                    { campo: "faltante", rotulo: "Faltante" },
+                    { campo: "percentualTexto", rotulo: "% Cumprimento" },
+                    { campo: "status", rotulo: "Status" }
+                ],
+                linhas: d.pcd
+            },
+            aprendizTabela: {
+                titulo: "Cumprimento Aprendiz por Filial",
+                colunas: [
+                    { campo: "filial", rotulo: "Filial" },
+                    { campo: "base", rotulo: "Base" },
+                    { campo: "minimo", rotulo: "Mínimo" },
+                    { campo: "atual", rotulo: "Atual" },
+                    { campo: "faltante", rotulo: "Faltante" },
+                    { campo: "percentualTexto", rotulo: "% Cumprimento" },
+                    { campo: "status", rotulo: "Status" }
+                ],
+                linhas: d.aprendiz
+            },
             pcdBase: {
                 titulo: "Cota PCD — Colaboradores Ativos por Filial",
                 colunas: [

@@ -74,7 +74,7 @@
     <div id="rhQuotaDrilldown_${instanceId}" class="rh-drilldown"></div>
 
     <div class="rh-chart-grid">
-        <div class="rh-chart-card">
+        <div class="rh-chart-card rh-light">
             <div class="rh-chart-header">
                 <div>
                     <h3>Status da Cota PCD</h3>
@@ -85,7 +85,7 @@
                 <canvas id="rhQuotaChartPcdStatus_${instanceId}"></canvas>
             </div>
         </div>
-        <div class="rh-chart-card">
+        <div class="rh-chart-card rh-light">
             <div class="rh-chart-header">
                 <div>
                     <h3>Status da Cota Aprendiz</h3>
@@ -98,7 +98,7 @@
         </div>
     </div>
 
-    <div class="rh-chart-card rh-quota-ranking">
+    <div class="rh-chart-card rh-quota-ranking rh-light">
         <div class="rh-chart-header">
             <div>
                 <h3>Ranking de Déficit por Filial</h3>
@@ -127,7 +127,7 @@
     </div>
 
     <div class="rh-table-grid rh-table-grid--single">
-        <div class="rh-table-card">
+        <div class="rh-table-card rh-light" data-rh-kpi="pcdTabela">
             <div class="rh-chart-header">
                 <div>
                     <h3>Cumprimento PCD por Filial</h3>
@@ -158,10 +158,11 @@
                     </thead>
                     <tbody id="rhQuotaTabelaPcd_${instanceId}"></tbody>
                 </table>
+            <span class="rh-table-hint">Clique para detalhar</span>
             </div>
         </div>
 
-        <div class="rh-table-card">
+        <div class="rh-table-card rh-light" data-rh-kpi="aprendizTabela">
             <div class="rh-chart-header">
                 <div>
                     <h3>Cumprimento Aprendiz por Filial</h3>
@@ -189,12 +190,13 @@
                     </thead>
                     <tbody id="rhQuotaTabelaAprendiz_${instanceId}"></tbody>
                 </table>
+            <span class="rh-table-hint">Clique para detalhar</span>
             </div>
         </div>
     </div>
 
     <div class="rh-table-grid rh-table-grid--single">
-        <div class="rh-table-card">
+        <div class="rh-table-card rh-light" data-rh-kpi="aprendizAtual">
             <div class="rh-chart-header">
                 <div>
                     <h3>Aprendizes com Contrato Vencendo</h3>
@@ -212,6 +214,7 @@
                 </thead>
                 <tbody id="rhQuotaTabelaVencimentos_${instanceId}"></tbody>
             </table>
+            <span class="rh-table-hint">Clique para detalhar</span>
         </div>
     </div>
 </section>

@@ -1,0 +1,41 @@
+.rh-estrategico-widget .rh-benefit {
+    margin-top: 32px;
+}
+
+.rh-estrategico-widget .rh-benefit-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Dois gráficos de mesma largura lado a lado */
+.rh-estrategico-widget .rh-benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+/* Rankings com ~16 barras precisam de mais altura que os 280px padrão */
+.rh-estrategico-widget .rh-benefit .rh-chart-body--tall {
+    height: 440px;
+}
+
+/* Variação relevante entre competências: alta de custo em vermelho, queda em verde */
+.rh-estrategico-widget .rh-light .rh-table td.rh-benefit-var--alta {
+    color: #dc2626 !important;
+    font-weight: 700;
+}
+
+.rh-estrategico-widget .rh-light .rh-table td.rh-benefit-var--queda {
+    color: #16a34a !important;
+    font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    .rh-estrategico-widget .rh-benefit-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rh-estrategico-widget .rh-benefit-kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

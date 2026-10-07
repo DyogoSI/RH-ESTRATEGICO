@@ -3,15 +3,15 @@
     class="super-widget wcm-widget-class fluig-style-guide rh-estrategico-widget"
     data-params="RHEstrategico.instance()">
 
-    <#include "partial-header.ftl">
-
     <div class="rh-shell">
         <aside class="rh-sidebar">
+            <#include "partial-brand.ftl">
             <#include "partial-navigation.ftl">
+            <#include "partial-actions.ftl">
         </aside>
 
         <div class="rh-content">
-            <#include "partial-filters.ftl">
+            <#include "partial-top-actions.ftl">
 
             <main class="rh-main-content">
 
@@ -43,8 +43,14 @@
                 <#include "view-quota.ftl">
             </div>
 
+            <div class="rh-view-container" data-rh-content="benefit">
+                <#include "view-benefit.ftl">
+            </div>
+
             </main>
         </div>
+
+        <#include "partial-filters.ftl">
     </div>
 
     <#include "partial-loading.ftl">

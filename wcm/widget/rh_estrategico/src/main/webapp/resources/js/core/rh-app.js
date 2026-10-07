@@ -71,6 +71,11 @@ var RHApp = {
                 return typeof RHQuotaView !== "undefined"
                     ? RHQuotaView
                     : null;
+
+            case "benefit":
+                return typeof RHBenefitView !== "undefined"
+                    ? RHBenefitView
+                    : null;
         }
 
         return null;
@@ -123,6 +128,7 @@ var RHApp = {
         this.viewsPendentes.leave = true;
         this.viewsPendentes.contract = true;
         this.viewsPendentes.quota = true;
+        this.viewsPendentes.benefit = true;
     },
 
     atualizar: function () {
